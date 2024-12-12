@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 dotenv.config(); // Wczytaj zmienne środowiskowe z pliku .env
 
@@ -16,4 +16,6 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+export default connectDB
+
+
