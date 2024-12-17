@@ -17,19 +17,6 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	role: {
-		type: String,
-		enum: ['user', 'admin'], // Role can be either 'user' or 'admin'
-		default: 'user',
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-	lastLogin: {
-		type: Date,
-		default: null, // Initially null until the user logs in
-	},
 });
 
 // Model export

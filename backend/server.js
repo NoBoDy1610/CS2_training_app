@@ -41,7 +41,7 @@ const authenticateToken = (req, res, next) => {
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 //REGISTER
-app.post('/api/register', async (req, res) => {
+app.post('/register', async (req, res) => {
 	const { username, email, password } = req.body;
 
 	// Walidacja pól
@@ -78,7 +78,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 //LOGIN
-app.post('/api/login', async (req, res) => {
+app.post('/login', async (req, res) => {
 	const { email, password } = req.body;
 
 	// Walidacja pól
@@ -113,13 +113,23 @@ app.post('/api/login', async (req, res) => {
 	}
 });
 
-app.get('/api/profile', authenticateToken, async (req, res) => {
+app.get('/profile', authenticateToken, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id).select('-password'); // Wyklucz hasło
 		res.status(200).json(user);
 	} catch (error) {
 		res.status(500).json({ message: 'Błąd serwera.' });
 	}
+});
+
+app.post('/forgot-password', async (req, res) => {
+	const { email } = req.body;
+
+	// Logika wysyłania maila (tu możesz podłączyć np. nodemailer)
+	console.log(`Wysłano link do resetu hasła na adres: ${email}`);
+
+	// Symulacja odpowiedzi
+	res.json({ message: 'Link do resetu hasła został wysłany.' });
 });
 
 // Start server

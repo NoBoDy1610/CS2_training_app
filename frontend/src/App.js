@@ -1,12 +1,11 @@
-import './App.css';
-import Account from './components/Account';
+import React from 'react';
+import AppRoutes from './Routes';
 
 function App() {
-	return (
-		<div className='App'>
-			<Account />
-		</div>
-	);
+
+  return (
+    <AppRoutes />
+  )
 }
 
 export default App;
