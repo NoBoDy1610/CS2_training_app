@@ -14,7 +14,7 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3001' }));
 app.use(express.json());
 
 // Routes
@@ -41,41 +41,44 @@ const authenticateToken = (req, res, next) => {
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 //REGISTER
+  
 app.post('/register', async (req, res) => {
 	const { username, email, password } = req.body;
-
+  
 	// Walidacja pól
 	if (!username || !email || !password) {
-		return res.status(400).json({ message: 'Wszystkie pola są wymagane.' });
+	  return res.status(400).json({ message: 'Wszystkie pola są wymagane.' }); // Zwróć odpowiedź i zakończ działanie
 	}
-
+  
 	try {
-		// Sprawdzenie, czy email już istnieje
-		const existingUser = await User.findOne({ email });
-		if (existingUser) {
-			return res
-				.status(400)
-				.json({ message: 'Użytkownik z podanym adresem email już istnieje.' });
-		}
-
-		// Hashowanie hasła
-		const hashedPassword = await bcrypt.hash(password, 10);
-
-		// Tworzenie użytkownika
-		const newUser = new User({
-			username,
-			email,
-			password: hashedPassword,
-		});
-
-		await newUser.save();
-
-		res.status(201).json({ message: 'Rejestracja zakończona sukcesem.' });
+	  // Sprawdzenie, czy email już istnieje
+	  const existingUser = await User.findOne({ email });
+	  if (existingUser) {
+		return res.status(400).json({ message: 'Użytkownik z podanym adresem email już istnieje.' }); // Zwróć odpowiedź i zakończ działanie
+	  }
+  
+	  // Hashowanie hasła
+	  const hashedPassword = await bcrypt.hash(password, 10);
+  
+	  // Tworzenie użytkownika
+	  const newUser = new User({
+		username,
+		email,
+		password: hashedPassword,
+	  });
+  
+	  await newUser.save();
+  
+	  // Sukces - zwróć odpowiedź
+	  res.status(201).json({ message: 'Rejestracja zakończona sukcesem.' });
 	} catch (error) {
-		console.error(error);
-		res.status(500).json({ message: 'Błąd serwera.' });
+	  console.error('Błąd serwera:', error);
+  
+	  // Obsłuż błąd serwera
+	  res.status(500).json({ message: 'Błąd serwera.' });
 	}
-});
+  });
+  
 
 //LOGIN
 app.post('/login', async (req, res) => {
@@ -133,5 +136,5 @@ app.post('/forgot-password', async (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

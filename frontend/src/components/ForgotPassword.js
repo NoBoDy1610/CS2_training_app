@@ -1,40 +1,49 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Message from './Message'; // Import komponentu Message
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('');
-	const [message, setMessage] = useState('');
-	const [error, setError] = useState('');
+	const [message, setMessage] = useState({ type: '', text: '' }); // Spójne zarządzanie komunikatami
 
 	const handleForgotPassword = async (e) => {
 		e.preventDefault();
+
+		// Reset komunikatu
+		setMessage({ type: '', text: '' });
+
 		try {
-			const response = await axios.post(
-				'/forgot-password',
-				{ email }
-			);
-			setMessage('Na podany adres został wysłany link do odzyskiwania hasła');
+			await axios.post('http://localhost:5000/forgot-password', { email });
+			setMessage({
+				type: 'success',
+				text: 'Na podany adres został wysłany link do odzyskiwania hasła.',
+			});
 		} catch (error) {
-			setError('Wystąpił problem podczas próby resetowania hasła');
+			setMessage({
+				type: 'error',
+				text: 'Wystąpił problem podczas próby resetowania hasła.',
+			});
 		}
 	};
 
 	return (
 		<div>
 			<h2>Zapomniałeś hasła?</h2>
-			{message && <p>{message}</p>}
-			{error && <p>{error}</p>}
+			<Message type={message.type} text={message.text} /> {/* Wyświetlanie komunikatów */}
 			<form onSubmit={handleForgotPassword}>
 				<div>
 					<label>Podaj swój adres e-mail:</label>
 					<input
-						type='email'
+						type="email"
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e) => {
+							setEmail(e.target.value);
+							setMessage({ type: '', text: '' }); // Reset komunikatu podczas edycji
+						}}
 						required
 					/>
 				</div>
-				<button type='submit'>Wyślij link</button>
+				<button type="submit">Wyślij link</button>
 			</form>
 		</div>
 	);
