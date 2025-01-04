@@ -4,8 +4,8 @@ import '../styles/Header.css';
 const Header = () => {
   return (
     <header className="header">
-      <h1>Welcome to the Dashboard</h1>
-      <p>Your central hub for managing everything!</p>
+      <h1>Witamy w centrum treningowym Counter Strike 2</h1>
+      <p>Tu rozwiniesz swoje umiejętności!</p>
     </header>
   );
 };
