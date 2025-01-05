@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Message from './Message'; // Import komponentu Message
+import Message from '../components/Message';
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ switchToLogin }) => {
 	const [email, setEmail] = useState('');
-	const [message, setMessage] = useState({ type: '', text: '' }); // Spójne zarządzanie komunikatami
+	const [message, setMessage] = useState({ type: '', text: '' });
 
 	const handleForgotPassword = async (e) => {
 		e.preventDefault();
-
-		// Reset komunikatu
 		setMessage({ type: '', text: '' });
 
 		try {
@@ -29,22 +27,25 @@ const ForgotPassword = () => {
 	return (
 		<div>
 			<h2>Zapomniałeś hasła?</h2>
-			<Message type={message.type} text={message.text} /> {/* Wyświetlanie komunikatów */}
+			<Message type={message.type} text={message.text} />
 			<form onSubmit={handleForgotPassword}>
 				<div>
 					<label>Podaj swój adres e-mail:</label>
 					<input
-						type="email"
+						type='email'
 						value={email}
-						onChange={(e) => {
-							setEmail(e.target.value);
-							setMessage({ type: '', text: '' }); // Reset komunikatu podczas edycji
-						}}
+						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
 				</div>
-				<button type="submit">Wyślij link</button>
+				<button type='submit'>Wyślij link</button>
 			</form>
+			<p>
+				Pamiętasz swoje hasło?{' '}
+				<button className='link-btn' onClick={switchToLogin}>
+					Zaloguj się
+				</button>
+			</p>
 		</div>
 	);
 };

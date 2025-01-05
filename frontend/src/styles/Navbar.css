@@ -1,18 +1,96 @@
 .navbar {
-    background: #333;
-    padding: 10px;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  background-color: #555;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #777;
+}
+
+.nav-list {
+  display: flex;
+  flex: 2;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 0 15px;
+}
+
+.nav-item a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-item a:hover {
+  color: #ffcc00;
+}
+
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.login-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
   .nav-list {
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
-    margin: 0;
-    padding: 0;
+    flex-direction: column;
+    align-items: center;
   }
-  
-  .nav-item a {
-    color: #fff;
-    text-decoration: none;
+
+  .nav-item {
+    margin: 10px 0;
   }
-  
+
+  .back-btn, .login-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}

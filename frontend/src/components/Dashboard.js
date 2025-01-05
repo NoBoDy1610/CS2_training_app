@@ -7,7 +7,6 @@ import MainSection from './MainSection';
 const Dashboard = () => {
   return (
     <div>
-      <Navbar />
       <Header />
       <MainSection />
       <Footer />
