@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/ReactionTimeGame.module.css";
+import Modal from "./Modal";
+import Login from "../auth/Login";
 
-const ReactionTimeGame = ({ token }) => {
+const ReactionTimeGame = () => {
   const [gameState, setGameState] = useState("start"); // "start", "waiting", "ready", "result", "error"
   const [reactionTime, setReactionTime] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null); // Dla ekranu błędu
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Stan logowania
+  const [showLoginModal, setShowLoginModal] = useState(false); // Modal logowania
+  const [scores, setScores] = useState([]); // Historia wyników użytkownika
+  const [pendingScore, setPendingScore] = useState(null); // Wynik oczekujący na zapis po zalogowaniu
 
+  // Sprawdzanie, czy użytkownik jest zalogowany
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // Sprawdź, czy token istnieje
+  }, []);
+
+  // Losowanie czasu i przygotowanie do gry
   const startGame = () => {
     setGameState("waiting");
     setReactionTime(null);
-    setErrorMessage(null);
 
-    // Losowy czas (1-3 sekundy)
     const randomDelay = Math.floor(Math.random() * 2000) + 1000;
-
     const timeout = setTimeout(() => {
       setGameState("ready");
       setStartTime(Date.now());
@@ -24,47 +33,86 @@ const ReactionTimeGame = ({ token }) => {
     setTimeoutId(timeout);
   };
 
+  // Obsługa kliknięcia w czasie gry
   const handleClick = () => {
     if (gameState === "waiting") {
-      // Kliknięcie za wcześnie
       clearTimeout(timeoutId);
       setGameState("error");
-      setErrorMessage("Too early! Wait for the green screen.");
     } else if (gameState === "ready") {
       const endTime = Date.now();
-      const time = endTime - startTime;
-      setReactionTime(time);
+      setReactionTime(endTime - startTime);
       setGameState("result");
     }
   };
 
-  const saveScore = async () => {
-    if (!token) {
-      alert("You must be logged in to save your score!");
-      return;
-    }
+  // Pobieranie wyników użytkownika
+  const fetchScores = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("http://localhost:5000/scores", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (reactionTime) {
-      try {
-        const response = await fetch("http://localhost:5000/score", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, time: reactionTime }),
-        });
-
-        if (response.ok) {
-          alert("Score saved successfully!");
-        } else {
-          const data = await response.json();
-          alert(`Error: ${data.error}`);
-        }
-      } catch (error) {
-        console.error("Error saving score:", error);
-        alert("Failed to save score. Please try again later.");
+      if (response.ok) {
+        const data = await response.json();
+        setScores(data); // Ustaw historię wyników
+      } else {
+        console.error("Błąd podczas pobierania wyników:", response.statusText);
       }
+    } catch (error) {
+      console.error("Błąd podczas komunikacji z serwerem:", error);
     }
   };
 
+  // Zapis wyniku
+  const saveScore = async () => {
+    if (!isLoggedIn) {
+      setPendingScore(reactionTime); // Ustaw wynik oczekujący
+      setShowLoginModal(true); // Otwórz modal logowania
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/score", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ time: reactionTime }),
+      });
+
+      if (response.ok) {
+        alert("Wynik zapisany pomyślnie!");
+        fetchScores(); // Odśwież historię wyników
+      } else {
+        const data = await response.json();
+        console.error("Błąd podczas zapisywania wyniku:", data.error);
+        alert(`Nie udało się zapisać wyniku: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Błąd podczas komunikacji z serwerem:", error);
+      alert("Wystąpił błąd podczas zapisywania wyniku. Spróbuj ponownie później.");
+    }
+  };
+
+  // Obsługa sukcesu logowania
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    setShowLoginModal(false); // Zamknij modal logowania
+    if (pendingScore !== null) {
+      setReactionTime(pendingScore);
+      saveScore(); // Zapisz wynik oczekujący
+      setPendingScore(null); // Wyzeruj wynik oczekujący
+    }
+    fetchScores(); // Pobierz historię wyników
+  };
+
+  // Ikony i komunikaty w zależności od wyniku
   const getResultDetails = () => {
     if (reactionTime <= 250) {
       return { icon: "⚡", message: "Amazing speed!" };
@@ -100,7 +148,7 @@ const ReactionTimeGame = ({ token }) => {
 
       {gameState === "error" && (
         <div className={`${styles.gameScreen} ${styles.error}`}>
-          <h2>{errorMessage}</h2>
+          <h2>Too early! Wait for the green screen.</h2>
           <button className={styles.retryButton} onClick={() => setGameState("start")}>
             Try Again
           </button>
@@ -122,6 +170,23 @@ const ReactionTimeGame = ({ token }) => {
             </button>
           </div>
         </div>
+      )}
+
+      <div>
+        <h3>Your Scores:</h3>
+        <ul>
+          {scores.map((score, index) => (
+            <li key={index}>
+              Czas: {score.time}ms, Data: {new Date(score.date).toLocaleString()}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {showLoginModal && (
+        <Modal onClose={() => setShowLoginModal(false)}>
+          <Login onLoginSuccess={handleLoginSuccess} />
+        </Modal>
       )}
     </div>
   );

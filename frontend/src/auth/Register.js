@@ -2,91 +2,99 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Message from '../components/Message';
 
-const Register = ({ switchToLogin }) => {
-	const [username, setUsername] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
-	const [message, setMessage] = useState({ type: '', text: '' });
+const Register = () => {
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [message, setMessage] = useState({ type: '', text: '' });
 
-	const handleRegister = async (e) => {
-		e.preventDefault();
-		setMessage({ type: '', text: '' });
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-		if (password !== confirmPassword) {
-			setMessage({ type: 'error', text: 'Hasła się nie zgadzają.' });
-			return;
-		}
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage({ type: '', text: '' });
 
-		try {
-			const response = await axios.post('http://localhost:5000/register', {
-				username,
-				email,
-				password,
-			});
+        // Walidacja
+        if (formData.password !== formData.confirmPassword) {
+            setMessage({ type: 'error', text: 'Hasła się nie zgadzają.' });
+            return;
+        }
 
-			setMessage({ type: 'success', text: response.data.message });
-		} catch (error) {
-			setMessage({
-				type: 'error',
-				text:
-					error.response?.data?.message ||
-					'Wystąpił problem podczas rejestracji.',
-			});
-		}
-	};
+        try {
+            const response = await axios.post('http://localhost:5000/register', {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+            });
 
-	return (
-		<div>
-			<h2>Rejestracja</h2>
-			<Message type={message.type} text={message.text} />
-			<form onSubmit={handleRegister}>
-				<div>
-					<label>Username:</label>
-					<input
-						type='text'
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						required
-					/>
-				</div>
-				<div>
-					<label>Email:</label>
-					<input
-						type='email'
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
-				</div>
-				<div>
-					<label>Hasło:</label>
-					<input
-						type='password'
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-					/>
-				</div>
-				<div>
-					<label>Potwierdź hasło:</label>
-					<input
-						type='password'
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
-					/>
-				</div>
-				<button type='submit'>Zarejestruj</button>
-			</form>
-			<p>
-				Masz już konto?{' '}
-				<button className='link-btn' onClick={switchToLogin}>
-					Zaloguj się
-				</button>
-			</p>
-		</div>
-	);
+            setMessage({ type: 'success', text: response.data.message });
+        } catch (error) {
+            // Obsługa szczegółowych błędów
+            if (error.response) {
+                setMessage({
+                    type: 'error',
+                    text: error.response.data.message || 'Wystąpił problem podczas rejestracji.',
+                });
+            } else {
+                setMessage({ type: 'error', text: 'Nie udało się połączyć z serwerem.' });
+            }
+        }
+    };
+
+    return (
+        <div>
+            <h2>Rejestracja</h2>
+            <Message type={message.type} text={message.text} />
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Username:</label>
+                    <input
+                        type="text"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Hasło:</label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Potwierdź hasło:</label>
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <button type="submit">Zarejestruj</button>
+            </form>
+        </div>
+    );
 };
 
 export default Register;

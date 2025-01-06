@@ -10,25 +10,21 @@ dotenv.config();
 
 const app = express();
 
-//Connection with mongoDB
+// Connection with MongoDB
 connectDB();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3001' }));
+app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 
-// Routes
-app.get('/', (req, res) => {
-	res.send('API is running...');
-});
+// Secret for JWT
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 // Middleware do uwierzytelniania
 const authenticateToken = (req, res, next) => {
 	const token = req.header('Authorization')?.split(' ')[1];
 	if (!token) {
-		return res
-			.status(401)
-			.json({ message: 'Brak tokena uwierzytelniającego.' });
+		return res.status(401).json({ message: 'Brak tokena uwierzytelniającego.' });
 	}
 	try {
 		const decoded = jwt.verify(token, JWT_SECRET);
@@ -39,15 +35,18 @@ const authenticateToken = (req, res, next) => {
 	}
 };
 
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
-//REGISTER
+// Routes
+app.get('/', (req, res) => {
+	res.send('API is running...');
+});
 
+// Rejestracja
 app.post('/register', async (req, res) => {
 	const { username, email, password } = req.body;
 
 	// Walidacja pól
 	if (!username || !email || !password) {
-		return res.status(400).json({ message: 'Wszystkie pola są wymagane.' }); // Zwróć odpowiedź i zakończ działanie
+		return res.status(400).json({ message: 'Wszystkie pola są wymagane.' });
 	}
 
 	try {
@@ -56,7 +55,7 @@ app.post('/register', async (req, res) => {
 		if (existingUser) {
 			return res
 				.status(400)
-				.json({ message: 'Użytkownik z podanym adresem email już istnieje.' }); // Zwróć odpowiedź i zakończ działanie
+				.json({ message: 'Użytkownik z podanym adresem email już istnieje.' });
 		}
 
 		// Hashowanie hasła
@@ -71,17 +70,14 @@ app.post('/register', async (req, res) => {
 
 		await newUser.save();
 
-		// Sukces - zwróć odpowiedź
 		res.status(201).json({ message: 'Rejestracja zakończona sukcesem.' });
 	} catch (error) {
 		console.error('Błąd serwera:', error);
-
-		// Obsłuż błąd serwera
 		res.status(500).json({ message: 'Błąd serwera.' });
 	}
 });
 
-//LOGIN
+// Logowanie
 app.post('/login', async (req, res) => {
 	const { email, password } = req.body;
 
@@ -94,17 +90,13 @@ app.post('/login', async (req, res) => {
 		// Znajdź użytkownika po emailu
 		const user = await User.findOne({ email });
 		if (!user) {
-			return res
-				.status(400)
-				.json({ message: 'Nieprawidłowy email lub hasło.' });
+			return res.status(400).json({ message: 'Nieprawidłowy email lub hasło.' });
 		}
 
 		// Sprawdź poprawność hasła
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
-			return res
-				.status(400)
-				.json({ message: 'Nieprawidłowy email lub hasło.' });
+			return res.status(400).json({ message: 'Nieprawidłowy email lub hasło.' });
 		}
 
 		// Generowanie tokena JWT
@@ -117,6 +109,7 @@ app.post('/login', async (req, res) => {
 	}
 });
 
+// Profil użytkownika
 app.get('/profile', authenticateToken, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id).select('-password'); // Wyklucz hasło
@@ -126,42 +119,56 @@ app.get('/profile', authenticateToken, async (req, res) => {
 	}
 });
 
+// Resetowanie hasła (przykład)
 app.post('/forgot-password', async (req, res) => {
 	const { email } = req.body;
 
-	// Logika wysyłania maila (tu możesz podłączyć np. nodemailer)
 	console.log(`Wysłano link do resetu hasła na adres: ${email}`);
-
-	// Symulacja odpowiedzi
 	res.json({ message: 'Link do resetu hasła został wysłany.' });
 });
 
 // Zapis wyniku
-app.post('/score', async (req, res) => {
-	const { token, time } = req.body;
+app.post('/score', authenticateToken, async (req, res) => {
+	const { time } = req.body;
+
+	// Walidacja danych
+	if (!time) {
+		return res.status(400).json({ error: 'Wynik czasu (time) jest wymagany.' });
+	}
+
 	try {
-		const decoded = jwt.verify(token, 'secretKey');
-		const user = await User.findById(decoded.id);
+		// Znajdź użytkownika na podstawie ID z tokena
+		const user = await User.findById(req.user.id);
+		if (!user) {
+			return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
+		}
+
+		// Dodaj wynik do użytkownika
 		user.scores.push({ time });
 		await user.save();
-		res.json({ message: 'Score saved successfully' });
+
+		res.status(200).json({ message: 'Wynik zapisany pomyślnie!', savedTime: time });
 	} catch (error) {
-		res.status(401).json({ error: 'Unauthorized' });
+		console.error("Błąd serwera podczas zapisywania wyniku:", error);
+		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
 	}
 });
 
 // Pobranie wyników użytkownika
-app.get('/scores', async (req, res) => {
-	const { token } = req.query;
+app.get('/scores', authenticateToken, async (req, res) => {
 	try {
-		const decoded = jwt.verify(token, 'secretKey');
-		const user = await User.findById(decoded.id);
-		res.json(user.scores);
+		const user = await User.findById(req.user.id);
+		if (!user) {
+			return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
+		}
+
+		res.status(200).json(user.scores);
 	} catch (error) {
-		res.status(401).json({ error: 'Unauthorized' });
+		console.error(error);
+		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
 	}
 });
 
 // Start server
 const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Serwer działa na porcie ${PORT}`));
