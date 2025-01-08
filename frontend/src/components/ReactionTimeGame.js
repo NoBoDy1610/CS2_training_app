@@ -1,195 +1,273 @@
-import React, { useState, useEffect } from "react";
-import styles from "../styles/ReactionTimeGame.module.css";
-import Modal from "./Modal";
-import Login from "../auth/Login";
+import React, { useState, useEffect } from 'react';
+import styles from '../styles/ReactionTimeGame.module.css';
 
 const ReactionTimeGame = () => {
-  const [gameState, setGameState] = useState("start"); // "start", "waiting", "ready", "result", "error"
-  const [reactionTime, setReactionTime] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [timeoutId, setTimeoutId] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Stan logowania
-  const [showLoginModal, setShowLoginModal] = useState(false); // Modal logowania
-  const [scores, setScores] = useState([]); // Historia wyników użytkownika
-  const [pendingScore, setPendingScore] = useState(null); // Wynik oczekujący na zapis po zalogowaniu
+	const [gameState, setGameState] = useState('start');
+	const [reactionTime, setReactionTime] = useState(null);
+	const [startTime, setStartTime] = useState(null);
+	const [timeoutId, setTimeoutId] = useState(null);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [scores, setScores] = useState([]);
+	const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+	const [isScoreSaved, setIsScoreSaved] = useState(false); // Zapobieganie wielokrotnemu zapisowi
 
-  // Sprawdzanie, czy użytkownik jest zalogowany
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token); // Sprawdź, czy token istnieje
-  }, []);
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		setIsLoggedIn(!!token);
+		if (token) fetchScores();
+	}, []);
 
-  // Losowanie czasu i przygotowanie do gry
-  const startGame = () => {
-    setGameState("waiting");
-    setReactionTime(null);
+	useEffect(() => {
+		const logoutListener = () => {
+			setIsLoggedIn(false);
+			setScores([]);
+		};
 
-    const randomDelay = Math.floor(Math.random() * 2000) + 1000;
-    const timeout = setTimeout(() => {
-      setGameState("ready");
-      setStartTime(Date.now());
-    }, randomDelay);
+		const loginListener = () => {
+			setIsLoggedIn(true);
+			fetchScores();
+		};
 
-    setTimeoutId(timeout);
-  };
+		window.addEventListener('userLoggedOut', logoutListener);
+		window.addEventListener('userLoggedIn', loginListener);
 
-  // Obsługa kliknięcia w czasie gry
-  const handleClick = () => {
-    if (gameState === "waiting") {
-      clearTimeout(timeoutId);
-      setGameState("error");
-    } else if (gameState === "ready") {
-      const endTime = Date.now();
-      setReactionTime(endTime - startTime);
-      setGameState("result");
-    }
-  };
+		return () => {
+			window.removeEventListener('userLoggedOut', logoutListener);
+			window.removeEventListener('userLoggedIn', loginListener);
+		};
+	}, []);
 
-  // Pobieranie wyników użytkownika
-  const fetchScores = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch("http://localhost:5000/scores", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+	const startGame = () => {
+		setGameState('waiting');
+		setReactionTime(null);
+		setIsScoreSaved(false); // Reset możliwości zapisu wyniku
 
-      if (response.ok) {
-        const data = await response.json();
-        setScores(data); // Ustaw historię wyników
-      } else {
-        console.error("Błąd podczas pobierania wyników:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Błąd podczas komunikacji z serwerem:", error);
-    }
-  };
+		const randomDelay = Math.floor(Math.random() * 2000) + 1000;
+		const timeout = setTimeout(() => {
+			setGameState('ready');
+			setStartTime(Date.now());
+		}, randomDelay);
 
-  // Zapis wyniku
-  const saveScore = async () => {
-    if (!isLoggedIn) {
-      setPendingScore(reactionTime); // Ustaw wynik oczekujący
-      setShowLoginModal(true); // Otwórz modal logowania
-      return;
-    }
+		setTimeoutId(timeout);
+	};
 
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/score", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ time: reactionTime }),
-      });
+	const handleClick = () => {
+		if (gameState === 'waiting') {
+			clearTimeout(timeoutId);
+			setGameState('error');
+		} else if (gameState === 'ready') {
+			const endTime = Date.now();
+			setReactionTime(endTime - startTime);
+			setGameState('result');
+		}
+	};
 
-      if (response.ok) {
-        alert("Wynik zapisany pomyślnie!");
-        fetchScores(); // Odśwież historię wyników
-      } else {
-        const data = await response.json();
-        console.error("Błąd podczas zapisywania wyniku:", data.error);
-        alert(`Nie udało się zapisać wyniku: ${data.error}`);
-      }
-    } catch (error) {
-      console.error("Błąd podczas komunikacji z serwerem:", error);
-      alert("Wystąpił błąd podczas zapisywania wyniku. Spróbuj ponownie później.");
-    }
-  };
+	const fetchScores = async () => {
+		const token = localStorage.getItem('token');
+		try {
+			const response = await fetch('http://localhost:5000/scores', {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 
-  // Obsługa sukcesu logowania
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-    setShowLoginModal(false); // Zamknij modal logowania
-    if (pendingScore !== null) {
-      setReactionTime(pendingScore);
-      saveScore(); // Zapisz wynik oczekujący
-      setPendingScore(null); // Wyzeruj wynik oczekujący
-    }
-    fetchScores(); // Pobierz historię wyników
-  };
+			if (response.ok) {
+				const data = await response.json();
+				setScores(data);
+			} else {
+				console.error('Błąd podczas pobierania wyników:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Błąd podczas komunikacji z serwerem:', error);
+		}
+	};
 
-  // Ikony i komunikaty w zależności od wyniku
-  const getResultDetails = () => {
-    if (reactionTime <= 250) {
-      return { icon: "⚡", message: "Amazing speed!" };
-    } else if (reactionTime > 250 && reactionTime <= 350) {
-      return { icon: "❗", message: "Good, but you can do better!" };
-    } else {
-      return { icon: "🐢", message: "Too slow! Try again." };
-    }
-  };
+	const saveScore = async () => {
+		if (!isLoggedIn) {
+			alert('Musisz się zalogować, aby zapisać wynik!');
+			return;
+		}
 
-  return (
-    <div className={styles.reactionTimeGame}>
-      {gameState === "start" && (
-        <div className={styles.startScreen}>
-          <h1>Reaction Time</h1>
-          <button className={styles.startButton} onClick={startGame}>
-            Start Game
-          </button>
-        </div>
-      )}
+		if (isScoreSaved) {
+			alert('Ten wynik został już zapisany!');
+			return;
+		}
 
-      {gameState === "waiting" && (
-        <div className={`${styles.gameScreen} ${styles.waiting}`} onClick={handleClick}>
-          Wait for GREEN...
-        </div>
-      )}
+		try {
+			const token = localStorage.getItem('token');
+			const response = await fetch('http://localhost:5000/score', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ time: reactionTime }),
+			});
 
-      {gameState === "ready" && (
-        <div className={`${styles.gameScreen} ${styles.ready}`} onClick={handleClick}>
-          Click NOW!
-        </div>
-      )}
+			if (response.ok) {
+				alert('Wynik zapisany pomyślnie!');
+				setIsScoreSaved(true); // Zablokuj ponowny zapis
+				fetchScores();
+			} else {
+				const data = await response.json();
+				alert(`Nie udało się zapisać wyniku: ${data.error}`);
+			}
+		} catch (error) {
+			alert(
+				'Wystąpił błąd podczas zapisywania wyniku. Spróbuj ponownie później.'
+			);
+		}
+	};
 
-      {gameState === "error" && (
-        <div className={`${styles.gameScreen} ${styles.error}`}>
-          <h2>Too early! Wait for the green screen.</h2>
-          <button className={styles.retryButton} onClick={() => setGameState("start")}>
-            Try Again
-          </button>
-        </div>
-      )}
+	const sortScores = (key) => {
+		let direction = 'asc';
+		if (sortConfig.key === key && sortConfig.direction === 'asc') {
+			direction = 'desc';
+		}
 
-      {gameState === "result" && (
-        <div className={styles.resultScreen}>
-          <div className={styles.resultIcon}>{getResultDetails().icon}</div>
-          <h2>Reaction Time</h2>
-          <p className={styles.reactionTime}>{reactionTime}ms</p>
-          <p>{getResultDetails().message}</p>
-          <div className={styles.resultButtons}>
-            <button className={styles.saveButton} onClick={saveScore}>
-              Save Score
-            </button>
-            <button className={styles.retryButton} onClick={() => setGameState("start")}>
-              Try Again
-            </button>
-          </div>
-        </div>
-      )}
+		const sortedScores = [...scores].sort((a, b) => {
+			if (key === 'time') {
+				return direction === 'asc' ? a.time - b.time : b.time - a.time;
+			}
+			if (key === 'date') {
+				return direction === 'asc'
+					? new Date(a.date) - new Date(b.date)
+					: new Date(b.date) - new Date(a.date);
+			}
+			return 0;
+		});
 
-      <div>
-        <h3>Your Scores:</h3>
-        <ul>
-          {scores.map((score, index) => (
-            <li key={index}>
-              Czas: {score.time}ms, Data: {new Date(score.date).toLocaleString()}
-            </li>
-          ))}
-        </ul>
-      </div>
+		setScores(sortedScores);
+		setSortConfig({ key, direction });
+	};
 
-      {showLoginModal && (
-        <Modal onClose={() => setShowLoginModal(false)}>
-          <Login onLoginSuccess={handleLoginSuccess} />
-        </Modal>
-      )}
-    </div>
-  );
+	const getSortArrow = (key) => {
+		if (sortConfig.key !== key) {
+			return '↕';
+		}
+		return sortConfig.direction === 'asc' ? '↑' : '↓';
+	};
+
+	const getResultDetails = () => {
+		if (reactionTime <= 250) {
+			return { icon: '⚡', message: 'Niesamowita szybkość!' };
+		} else if (reactionTime > 250 && reactionTime <= 350) {
+			return { icon: '👌', message: 'Dobrze, ale możesz zrobić to lepiej!' };
+		} else {
+			return { icon: '🐢', message: 'Zbyt wolno! Spróbuj ponownie.' };
+		}
+	};
+
+	return (
+		<div className={styles.reactionTimeGame}>
+			{/* Kontener główny gry */}
+			<div className={styles.gameContainer}>
+				{gameState === 'start' && (
+					<div className={styles.startScreen}>
+						<h1>Czas reakcji</h1>
+						<button className={styles.startButton} onClick={startGame}>
+							Start gry
+						</button>
+					</div>
+				)}
+
+				{gameState === 'waiting' && (
+					<div
+						className={`${styles.gameScreen} ${styles.waiting}`}
+						onClick={handleClick}
+					>
+						Zaczekaj na ZIELONE...
+					</div>
+				)}
+
+				{gameState === 'ready' && (
+					<div
+						className={`${styles.gameScreen} ${styles.ready}`}
+						onClick={handleClick}
+					>
+						Kliknij TERAZ!
+					</div>
+				)}
+
+				{gameState === 'error' && (
+					<div className={`${styles.gameScreen} ${styles.error}`}>
+						<div className={styles.errorContent}>
+							<h2 className={styles.errorTitle}>Za wcześnie!</h2>
+							<p className={styles.errorMessage}>
+								Poczekaj na zielony ekran i spróbuj ponownie.
+							</p>
+							<button
+								className={styles.retryButton}
+								onClick={() => setGameState('start')}
+							>
+								Spróbuj ponownie
+							</button>
+						</div>
+					</div>
+				)}
+
+				{gameState === 'result' && (
+					<div className={styles.resultScreen}>
+						<div className={styles.resultIcon}>{getResultDetails().icon}</div>
+						<h2>Twój czas reakcji</h2>
+						<p className={styles.reactionTime}>{reactionTime}ms</p>
+						<p>{getResultDetails().message}</p>
+						<div className={styles.resultButtons}>
+							<button className={styles.saveButton} onClick={saveScore}>
+								Zapisz wynik
+							</button>
+							<button
+								className={styles.retryButton}
+								onClick={() => setGameState('start')}
+							>
+								Spróbuj ponownie
+							</button>
+						</div>
+					</div>
+				)}
+			</div>
+
+			{/* Sekcja wyników */}
+			<div className={styles.scoresSection}>
+				<h3>Twoje wyniki:</h3>
+				{isLoggedIn ? (
+					scores.length > 0 ? (
+						<table className={styles.scoresTable}>
+							<thead>
+								<tr>
+									<th>#</th>
+									<th onClick={() => sortScores('time')}>
+										Wynik (ms) {getSortArrow('time')}
+									</th>
+									<th onClick={() => sortScores('date')}>
+										Data {getSortArrow('date')}
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{scores.map((score, index) => (
+									<tr key={index}>
+										<td>{index + 1}</td>
+										<td>{score.time}</td>
+										<td>{new Date(score.date).toLocaleString()}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					) : (
+						<p className={styles.noScoresMessage}>
+							Brak wyników. Rozpocznij grę, aby zobaczyć swoje wyniki!
+						</p>
+					)
+				) : (
+					<p className={styles.noScoresMessage}>
+						Zaloguj się, aby zobaczyć swoje wyniki!
+					</p>
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default ReactionTimeGame;

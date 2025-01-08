@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Message from '../components/Message';
+import styles from '../styles/Login.module.css';
 
-const Login = ({ switchToRegister, switchToForgotPassword }) => {
+const Login = ({
+	onLoginSuccess,
+	switchToRegister,
+	switchToForgotPassword,
+}) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [message, setMessage] = useState({ type: '', text: '' });
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-		setMessage({ type: '', text: '' });
+		setErrorMessage('');
+
+		// Walidacja pól przed wysłaniem
+		if (!email || !password) {
+			setErrorMessage('Wszystkie pola są wymagane!');
+			return;
+		}
 
 		try {
 			const response = await axios.post('http://localhost:5000/login', {
@@ -18,23 +28,23 @@ const Login = ({ switchToRegister, switchToForgotPassword }) => {
 			});
 
 			if (response.status === 200) {
-				localStorage.setItem('token', response.data.token);
-				setMessage({ type: 'success', text: 'Logowanie zakończone sukcesem!' });
+				localStorage.setItem('token', response.data.token); // Zapis tokena
+				onLoginSuccess(); // Informujemy o sukcesie logowania
 			}
 		} catch (error) {
-			setMessage({
-				type: 'error',
-				text: error.response?.data?.message || 'Nieprawidłowy email lub hasło.',
-			});
+			const errorMsg =
+				error.response?.data?.message ||
+				'Błąd podczas logowania. Spróbuj ponownie.';
+			setErrorMessage(errorMsg);
 		}
 	};
 
 	return (
-		<div>
+		<div className={styles.loginModal}>
 			<h2>Logowanie</h2>
-			<Message type={message.type} text={message.text} />
+			{errorMessage && <p className={styles.error}>{errorMessage}</p>}
 			<form onSubmit={handleLogin}>
-				<div>
+				<div className={styles.formGroup}>
 					<label>Email:</label>
 					<input
 						type='email'
@@ -43,7 +53,7 @@ const Login = ({ switchToRegister, switchToForgotPassword }) => {
 						required
 					/>
 				</div>
-				<div>
+				<div className={styles.formGroup}>
 					<label>Hasło:</label>
 					<input
 						type='password'
@@ -52,20 +62,18 @@ const Login = ({ switchToRegister, switchToForgotPassword }) => {
 						required
 					/>
 				</div>
-				<button type='submit'>Zaloguj</button>
+				<button type='submit' className={styles.loginButton}>
+					Zaloguj
+				</button>
 			</form>
-			<p>
-				Nie masz konta?{' '}
-				<button className='link-btn' onClick={switchToRegister}>
+			<div className={styles.links}>
+				<button className={styles.linkButton} onClick={switchToRegister}>
 					Zarejestruj się
 				</button>
-			</p>
-			<p>
-				Zapomniałeś hasła?{' '}
-				<button className='link-btn' onClick={switchToForgotPassword}>
-					Odzyskaj hasło
+				<button className={styles.linkButton} onClick={switchToForgotPassword}>
+					Zapomniałem hasła
 				</button>
-			</p>
+			</div>
 		</div>
 	);
 };

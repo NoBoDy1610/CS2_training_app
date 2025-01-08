@@ -1,112 +1,202 @@
 .reactionTimeGame {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  background-color: #f4f4f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	text-align: center;
+	font-family: Arial, sans-serif;
 }
 
-.startScreen, .gameScreen, .resultScreen {
-  max-width: 400px;
-  width: 100%;
-  margin: auto;
+.startScreen {
+	padding: 20px;
 }
 
 .startButton {
-  padding: 15px 30px;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #ffcc00;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+	padding: 15px 30px;
+	font-size: 20px;
+	font-weight: bold;
+	background-color: #28a745;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
 .startButton:hover {
-  background-color: #ffb300;
+	background-color: #218838;
+}
+
+.gameContainer {
+	width: 80%;
+	max-width: 600px;
+	height: 400px; /* Stała wysokość kontenera */
+	margin: 20px auto;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #f8f9fa;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .gameScreen {
-  width: 100%;
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  font-weight: bold;
-  border-radius: 10px;
-  margin-top: 20px;
-  color: black;
-  text-transform: uppercase;
+	text-align: center;
+	font-size: 36px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
 }
 
-.waiting {
-  background-color: #ffc107;
+.gameScreen.waiting {
+	background-color: #ffc107;
+	color: #212529;
+	width: 100%;
+	height: 100%; /* Dopasowanie do kontenera */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.ready {
-  background-color: #28a745;
+.gameScreen.ready {
+	background-color: #28a745;
+	color: white;
+	width: 100%;
+	height: 100%; /* Dopasowanie do kontenera */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.error {
-  background-color: #dc3545;
-  color: white;
+.gameScreen.error {
+	background-color: #dc3545;
+	color: white;
+	width: 100%;
+	height: 100%; /* Dopasowanie do kontenera */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .resultScreen {
-  padding: 20px;
-  background-color: white;
-  color: black;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	height: 100%; /* Dopasowanie do kontenera */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .resultIcon {
-  font-size: 50px;
-  margin-bottom: 20px;
+	font-size: 50px;
+	margin-bottom: 10px;
 }
 
 .reactionTime {
-  font-size: 48px;
-  font-weight: bold;
-  margin: 10px 0;
+	font-size: 36px;
+	font-weight: bold;
 }
 
-.resultButtons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+.resultButtons button {
+	margin: 10px;
+	padding: 10px 15px;
+	font-size: 18px;
+	font-weight: bold;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
-.saveButton, .retryButton {
-  padding: 10px 20px;
-  font-size: 18px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.errorContent {
+	display: flex;
+	flex-direction: column; /* Ustawienie elementów w pionie */
+	align-items: center; /* Wyrównanie do środka */
+	justify-content: center; /* Wyśrodkowanie w pionie */
+	text-align: center;
 }
 
-.saveButton {
-  background-color: #ffc107;
-  color: black;
+.errorTitle {
+	font-size: 36px; /* Większa czcionka dla tytułu */
+	font-weight: bold;
+	margin-bottom: 20px; /* Odstęp poniżej tytułu */
+	color: white;
+}
+
+.errorMessage {
+	font-size: 20px; /* Czytelna czcionka dla komunikatu */
+	margin-bottom: 30px; /* Większy odstęp poniżej komunikatu */
+	color: white;
 }
 
 .retryButton {
-  background-color: #007bff;
-  color: white;
-}
-
-.saveButton:hover {
-  background-color: #ffb300;
+	padding: 12px 20px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .retryButton:hover {
-  background-color: #0056b3;
+	background-color: #0056b3;
+	transform: scale(1.05);
+}
+
+.retryButton:active {
+	background-color: #003d82;
+	transform: scale(0.95);
+}
+
+.saveButton {
+	background-color: #007bff;
+	color: white;
+	transition: background-color 0.3s ease;
+}
+
+.saveButton:hover {
+	background-color: #0056b3;
+}
+
+.scoresSection {
+	margin: 20px auto;
+	max-width: 600px;
+	text-align: center;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scoresTable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.scoresTable th,
+.scoresTable td {
+	padding: 10px;
+	text-align: center;
+}
+
+.scoresTable th {
+	background-color: #007bff;
+	color: white;
+}
+
+.scoresTable tbody tr:nth-child(odd) {
+	background-color: #f2f2f2;
+}
+
+.scoresTable tbody tr:nth-child(even) {
+	background-color: white;
+}
+
+.scoresTable tbody tr:hover {
+	background-color: #e6f7ff;
+}
+
+.noScoresMessage {
+	color: #888;
+	font-size: 18px;
+	margin-top: 10px;
 }

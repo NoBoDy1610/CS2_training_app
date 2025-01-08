@@ -1,0 +1,19 @@
+.links {
+	margin-top: 15px;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.linkButton {
+	background: none;
+	border: none;
+	color: #007bff;
+	text-decoration: underline;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.linkButton:hover {
+	color: #0056b3;
+}
