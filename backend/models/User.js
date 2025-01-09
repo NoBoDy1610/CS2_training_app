@@ -1,15 +1,22 @@
 import mongoose from 'mongoose';
 
+// Schemat dla wyników pierwszej gry
 const scoreSchema = new mongoose.Schema({
-  time: { type: Number, required: true },
-  date: { type: Date, default: Date.now }, // Pole opcjonalne do zapisywania daty
+	time: { type: Number, required: true }, // Czas reakcji
+	date: { type: Date, default: Date.now },
+});
+
+const aimTrainingScoreSchema = new mongoose.Schema({
+	points: { type: Number, required: true },
+	date: { type: Date, default: Date.now },
 });
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  scores: [scoreSchema], // Tablica wyników
+	username: { type: String, required: true, unique: true },
+	email: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
+	scores: [scoreSchema], // Wyniki dla gry na reakcję
+	aimTrainingScores: [aimTrainingScoreSchema], // Wyniki dla gry celności
 });
 
 const User = mongoose.model('User', userSchema);

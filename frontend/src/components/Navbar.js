@@ -11,8 +11,19 @@ const Navbar = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	useEffect(() => {
-		const token = localStorage.getItem('token');
+		const token = sessionStorage.getItem('token'); // Zmiana na sessionStorage
 		setIsLoggedIn(!!token);
+
+		const handleLogin = () => setIsLoggedIn(true);
+		const handleLogout = () => setIsLoggedIn(false);
+
+		window.addEventListener('userLoggedIn', handleLogin);
+		window.addEventListener('userLoggedOut', handleLogout);
+
+		return () => {
+			window.removeEventListener('userLoggedIn', handleLogin);
+			window.removeEventListener('userLoggedOut', handleLogout);
+		};
 	}, []);
 
 	const openModal = (content) => {
@@ -25,14 +36,14 @@ const Navbar = () => {
 	};
 
 	const handleLogout = () => {
-		localStorage.removeItem('token');
-		setIsLoggedIn(false);
-		window.dispatchEvent(new Event('userLoggedOut')); // Powiadom inne komponenty o wylogowaniu
+		sessionStorage.removeItem('token');
+		window.dispatchEvent(new Event('userLoggedOut')); // Powiadom inne komponenty
+		setIsLoggedIn(false); // Zaktualizuj stan
 	};
 
 	const handleLoginSuccess = () => {
+		window.dispatchEvent(new Event('userLoggedIn'));
 		setIsLoggedIn(true);
-		window.dispatchEvent(new Event('userLoggedIn')); // Powiadom inne komponenty o zalogowaniu
 		closeModal();
 	};
 

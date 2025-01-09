@@ -1,0 +1,113 @@
+.aimTrainingGame {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.infoBar {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.controls {
+  margin: 15px 0;
+}
+
+.controls label {
+  margin: 0 10px;
+  font-size: 16px;
+}
+
+.controls input,
+.controls select {
+  padding: 5px;
+  font-size: 14px;
+}
+
+.gameBoard {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: red;
+  cursor: pointer;
+}
+
+
+.circle:hover {
+  transform: scale(1.1);
+}
+
+.buttons {
+  margin: 15px 0;
+}
+
+.startButton,
+.resetButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.startButton:hover,
+.resetButton:hover {
+  background-color: #0056b3;
+}
+
+.scoresSection {
+  margin-top: 20px;
+}
+
+.scoresSection h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.scoresTable {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.scoresTable th,
+.scoresTable td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.scoresTable th {
+  background-color: #007bff;
+  color: white;
+}
+
+.scoresTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.scoresTable tr:hover {
+  background-color: #e6f7ff;
+}
+
+.gameOverMessage {
+  font-size: 18px;
+  font-weight: bold;
+  color: #dc3545;
+  margin: 20px 0;
+}

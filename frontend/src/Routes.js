@@ -6,7 +6,7 @@ import Register from './auth/Register';
 import Dashboard from './components/Dashboard';
 import ForgotPassword from './auth/ForgotPassword';
 import ReactionTime from './components/ReactionTimeGame';
-import AimTraining from './components/AimTraining';
+import AimTrainingGame from './components/AimTrainingGame';
 import MapGuide from './components/MapGuide';
 import Tactics from './components/Tactics';
 import PlayerSettings from './components/PlayerSettings';
@@ -47,7 +47,7 @@ function AppRoutes() {
 				path='/aim-training'
 				element={
 					<Layout>
-						<AimTraining />
+						<AimTrainingGame />
 					</Layout>
 				}
 			/>

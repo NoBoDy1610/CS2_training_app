@@ -12,30 +12,35 @@ const ReactionTimeGame = () => {
 	const [isScoreSaved, setIsScoreSaved] = useState(false); // Zapobieganie wielokrotnemu zapisowi
 
 	useEffect(() => {
-		const token = localStorage.getItem('token');
+		const token = sessionStorage.getItem('token');
 		setIsLoggedIn(!!token);
 		if (token) fetchScores();
-	}, []);
+	  }, []);
+	  
 
-	useEffect(() => {
-		const logoutListener = () => {
-			setIsLoggedIn(false);
-			setScores([]);
+	  useEffect(() => {
+		const token = sessionStorage.getItem('token');
+		setIsLoggedIn(!!token);
+	  
+		const handleLogin = () => {
+		  setIsLoggedIn(true);
+		  fetchScores();
 		};
-
-		const loginListener = () => {
-			setIsLoggedIn(true);
-			fetchScores();
+	  
+		const handleLogout = () => {
+		  setIsLoggedIn(false);
+		  setScores([]);
 		};
-
-		window.addEventListener('userLoggedOut', logoutListener);
-		window.addEventListener('userLoggedIn', loginListener);
-
+	  
+		window.addEventListener('userLoggedIn', handleLogin);
+		window.addEventListener('userLoggedOut', handleLogout);
+	  
 		return () => {
-			window.removeEventListener('userLoggedOut', logoutListener);
-			window.removeEventListener('userLoggedIn', loginListener);
+		  window.removeEventListener('userLoggedIn', handleLogin);
+		  window.removeEventListener('userLoggedOut', handleLogout);
 		};
-	}, []);
+	  }, []);
+	  
 
 	const startGame = () => {
 		setGameState('waiting');
@@ -63,7 +68,12 @@ const ReactionTimeGame = () => {
 	};
 
 	const fetchScores = async () => {
-		const token = localStorage.getItem('token');
+		const token = sessionStorage.getItem('token');
+		if (!token) {
+			console.error('Brak tokena. Użytkownik musi się zalogować.');
+			return;
+		}
+	
 		try {
 			const response = await fetch('http://localhost:5000/scores', {
 				method: 'GET',
@@ -71,10 +81,10 @@ const ReactionTimeGame = () => {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-
+	
 			if (response.ok) {
 				const data = await response.json();
-				setScores(data);
+				setScores(data); // Ustaw wyniki
 			} else {
 				console.error('Błąd podczas pobierania wyników:', response.statusText);
 			}
@@ -82,33 +92,39 @@ const ReactionTimeGame = () => {
 			console.error('Błąd podczas komunikacji z serwerem:', error);
 		}
 	};
-
+	
 	const saveScore = async () => {
+		const token = sessionStorage.getItem('token'); 
+	
 		if (!isLoggedIn) {
 			alert('Musisz się zalogować, aby zapisać wynik!');
 			return;
 		}
-
+	
 		if (isScoreSaved) {
 			alert('Ten wynik został już zapisany!');
 			return;
 		}
-
+	
+		if (!token) {
+			alert('Nie udało się zapisać wyniku. Zaloguj się ponownie.');
+			return;
+		}
+	
 		try {
-			const token = localStorage.getItem('token');
 			const response = await fetch('http://localhost:5000/score', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token}`, // Przesyłanie tokena w nagłówkach
 				},
 				body: JSON.stringify({ time: reactionTime }),
 			});
-
+	
 			if (response.ok) {
 				alert('Wynik zapisany pomyślnie!');
 				setIsScoreSaved(true); // Zablokuj ponowny zapis
-				fetchScores();
+				fetchScores(); // Odśwież wyniki
 			} else {
 				const data = await response.json();
 				alert(`Nie udało się zapisać wyniku: ${data.error}`);
@@ -117,9 +133,10 @@ const ReactionTimeGame = () => {
 			alert(
 				'Wystąpił błąd podczas zapisywania wyniku. Spróbuj ponownie później.'
 			);
+			console.error('Błąd zapisu wyniku:', error);
 		}
 	};
-
+	
 	const sortScores = (key) => {
 		let direction = 'asc';
 		if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -177,7 +194,7 @@ const ReactionTimeGame = () => {
 						className={`${styles.gameScreen} ${styles.waiting}`}
 						onClick={handleClick}
 					>
-						Zaczekaj na ZIELONE...
+						Zaczekaj na zielone...
 					</div>
 				)}
 
@@ -186,7 +203,7 @@ const ReactionTimeGame = () => {
 						className={`${styles.gameScreen} ${styles.ready}`}
 						onClick={handleClick}
 					>
-						Kliknij TERAZ!
+						Kliknij teraz!
 					</div>
 				)}
 

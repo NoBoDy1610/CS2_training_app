@@ -169,6 +169,44 @@ app.get('/scores', authenticateToken, async (req, res) => {
 	}
 });
 
+// Pobranie wyników Aim Training
+app.get('/aim-training-scores', authenticateToken, async (req, res) => {
+	try {
+	  const user = await User.findById(req.user.id);
+	  if (!user) {
+		return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
+	  }
+	  res.status(200).json(user.aimTrainingScores || []); // Zwróć wyniki gry Aim Training
+	} catch (error) {
+	  console.error('Błąd podczas pobierania wyników Aim Training:', error);
+	  res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
+	}
+  });
+  
+  // Zapisanie wyniku Aim Training
+  app.post('/aim-training-scores', authenticateToken, async (req, res) => {
+	const { points } = req.body;
+  
+	if (typeof points !== 'number') {
+	  return res.status(400).json({ error: 'Pole `points` musi być liczbą.' });
+	}
+  
+	try {
+	  const user = await User.findById(req.user.id);
+	  if (!user) {
+		return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
+	  }
+  
+	  user.aimTrainingScores.push({ points });
+	  await user.save();
+  
+	  res.status(200).json({ message: 'Wynik zapisany pomyślnie!', savedPoints: points });
+	} catch (error) {
+	  console.error('Błąd podczas zapisywania wyniku Aim Training:', error);
+	  res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
+	}
+  });  
+  
 // Start server
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Serwer działa na porcie ${PORT}`));
