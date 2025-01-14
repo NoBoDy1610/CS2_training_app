@@ -12,6 +12,14 @@ const AimTrainingGame = () => {
 	const [circleSizeKey, setCircleSizeKey] = useState('medium');
 	const [circleSize, setCircleSize] = useState(50);
 	const [isScoreSaved, setIsScoreSaved] = useState(false);
+	const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+	const [enableMovement, setEnableMovement] = useState(false);
+	const [showModal, setShowModal] = useState(false);
+	const [tempSettings, setTempSettings] = useState({
+		numCircles: 4,
+		circleSizeKey: 'medium',
+		enableMovement: false,
+	});
 
 	const gridRows = 3;
 	const gridCols = 3;
@@ -25,7 +33,33 @@ const AimTrainingGame = () => {
 
 	useEffect(() => {
 		setCircleSize(circleSizes[circleSizeKey]);
+		// eslint-disable-next-line
 	}, [circleSizeKey]);
+
+	useEffect(() => {
+		if (enableMovement && gameState === 'playing') {
+			const interval = setInterval(() => {
+				setCircles((prevCircles) =>
+					prevCircles.map((circle) => {
+						const cellWidth = 600 / gridCols;
+						const cellLeft = circle.cellX * cellWidth;
+						const cellRight = cellLeft + cellWidth - circleSize;
+
+						let newX = circle.x + circle.speedX;
+
+						if (newX <= cellLeft || newX >= cellRight) {
+							circle.speedX *= -1;
+							newX = Math.max(cellLeft, Math.min(newX, cellRight));
+						}
+
+						return { ...circle, x: newX };
+					})
+				);
+			}, 16);
+			return () => clearInterval(interval);
+		}
+		// eslint-disable-next-line
+	}, [enableMovement, gameState]);
 
 	useEffect(() => {
 		const token = sessionStorage.getItem('token');
@@ -40,7 +74,7 @@ const AimTrainingGame = () => {
 		const handleLogout = () => {
 			setIsLoggedIn(false);
 			setScores([]);
-			resetGame(); // Resetuj grę po wylogowaniu
+			resetGame();
 		};
 
 		window.addEventListener('userLoggedIn', handleLogin);
@@ -103,55 +137,74 @@ const AimTrainingGame = () => {
 		setScore(0);
 		setTimeLeft(60);
 		setCircles([]);
-		setIsScoreSaved(false);
 	};
 
 	const generateGridPositions = () => {
 		const positions = [];
-		const cellWidth = 100 / gridCols;
-		const cellHeight = 100 / gridRows;
-		const offset = circleSize / 2;
-
 		for (let row = 0; row < gridRows; row++) {
 			for (let col = 0; col < gridCols; col++) {
-				const x = `calc(${col * cellWidth + cellWidth / 2}% - ${offset}px)`;
-				const y = `calc(${row * cellHeight + cellHeight / 2}% - ${offset}px)`;
-				positions.push({ x, y });
+				positions.push({ cellX: col, cellY: row });
 			}
 		}
-
 		return positions;
 	};
 
 	const generateCircles = () => {
 		const positions = generateGridPositions();
 		const shuffledPositions = positions.sort(() => Math.random() - 0.5);
-		setCircles(shuffledPositions.slice(0, numCircles));
+		const newCircles = shuffledPositions.slice(0, numCircles).map((pos) => ({
+			cellX: pos.cellX,
+			cellY: pos.cellY,
+			x: pos.cellX * (600 / gridCols) + 600 / gridCols / 2 - circleSize / 2,
+			y: pos.cellY * (600 / gridRows) + 600 / gridRows / 2 - circleSize / 2,
+			speedX: Math.random() > 0.5 ? 2 : -2,
+		}));
+		setCircles(newCircles);
 	};
 
 	const handleCircleClick = (index) => {
 		if (gameState !== 'playing') return;
+
 		setScore((prev) => prev + 1);
 
 		const positions = generateGridPositions();
 		const availablePositions = positions.filter(
 			(pos) =>
-				!circles.some((circle) => circle.x === pos.x && circle.y === pos.y)
+				!circles.some(
+					(circle, circleIndex) =>
+						circleIndex !== index &&
+						circle.cellX === pos.cellX &&
+						circle.cellY === pos.cellY
+				)
 		);
+
+		if (availablePositions.length === 0) return;
 
 		const newPosition =
 			availablePositions[Math.floor(Math.random() * availablePositions.length)];
+
 		setCircles((prev) =>
-			prev.map((circle, i) => (i === index ? newPosition : circle))
+			prev.map((circle, circleIndex) =>
+				circleIndex === index
+					? {
+							...circle,
+							x:
+								newPosition.cellX * (600 / gridCols) +
+								600 / gridCols / 2 -
+								circleSize / 2,
+							y:
+								newPosition.cellY * (600 / gridRows) +
+								600 / gridRows / 2 -
+								circleSize / 2,
+							cellX: newPosition.cellX,
+							cellY: newPosition.cellY,
+							speedX: Math.random() > 0.5 ? 2 : -2,
+					  }
+					: circle
+			)
 		);
 	};
 
-	const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
-	useEffect(() => {
-		if (sortConfig.key === null) {
-			setScores((prevScores) => [...prevScores]); // Resetuje sortowanie do domyślnej kolejności
-		}
-	}, [scores, sortConfig]);
 	const sortScores = (key) => {
 		let direction = 'asc';
 		if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -175,7 +228,7 @@ const AimTrainingGame = () => {
 	};
 
 	const getSortArrow = (key) => {
-		if (!sortConfig.key) return '↕'; // Neutralny stan
+		if (!sortConfig.key) return '↕';
 		if (sortConfig.key !== key) return '↕';
 		return sortConfig.direction === 'asc' ? '↑' : '↓';
 	};
@@ -207,8 +260,8 @@ const AimTrainingGame = () => {
 
 			if (response.ok) {
 				alert('Wynik zapisany pomyślnie!');
-				setSortConfig({ key: null, direction: null }); // Reset konfiguracji sortowania
-				fetchScores(); // Pobierz zaktualizowane wyniki
+				setIsScoreSaved(true);
+				fetchScores();
 			} else {
 				const data = await response.json();
 				alert(`Nie udało się zapisać wyniku: ${data.error}`);
@@ -221,38 +274,35 @@ const AimTrainingGame = () => {
 		}
 	};
 
+	const openModal = () => {
+		setTempSettings({
+			numCircles,
+			circleSizeKey,
+			enableMovement,
+		});
+		setShowModal(true);
+	};
+
+	const saveSettings = () => {
+		setNumCircles(tempSettings.numCircles);
+		setCircleSizeKey(tempSettings.circleSizeKey);
+		setEnableMovement(tempSettings.enableMovement);
+		setShowModal(false);
+	};
+
+	const cancelSettings = () => {
+		setShowModal(false);
+	};
 	return (
 		<div className={styles.aimTrainingGame}>
 			<h1>Gra Celności</h1>
-			<div>
-				<label>
-					Liczba kulek (1-7):
-					<input
-						type='number'
-						value={numCircles}
-						disabled={gameState !== 'start'}
-						min={1}
-						max={8}
-						onChange={(e) =>
-							setNumCircles(Math.min(7, Math.max(1, e.target.value)))
-						}
-					/>
-				</label>
-				<label>
-					Rozmiar kulek:
-					<select
-						value={circleSizeKey}
-						disabled={gameState !== 'start'}
-						onChange={(e) => setCircleSizeKey(e.target.value)}
-					>
-						<option value='verySmall'>Bardzo Mała</option>
-						<option value='small'>Mała</option>
-						<option value='medium'>Średnia</option>
-						<option value='large'>Duża</option>
-						<option value='veryLarge'>Bardzo Duża</option>
-					</select>
-				</label>
-			</div>
+			<button
+				className={styles.settingsButton}
+				onClick={openModal}
+				disabled={gameState !== 'start'}
+			>
+				Ustawienia
+			</button>
 			<div className={styles.gameBoard}>
 				{generateGridPositions().map((pos, index) => (
 					<div
@@ -268,6 +318,7 @@ const AimTrainingGame = () => {
 						}}
 					></div>
 				))}
+
 				{circles.map((circle, index) => (
 					<div
 						key={index}
@@ -275,14 +326,18 @@ const AimTrainingGame = () => {
 						style={{
 							width: `${circleSize}px`,
 							height: `${circleSize}px`,
-							left: circle.x,
-							top: circle.y,
+							left: `${circle.x}px`,
+							top: `${circle.y}px`,
+							position: 'absolute',
 						}}
 						onClick={() => handleCircleClick(index)}
 					></div>
 				))}
+				{gameState === 'finished' && (
+					<div className={styles.finalScore}>Wynik: {score}</div>
+				)}
 			</div>
-			<div>
+			<div className={styles.infoBar}>
 				<p>Wynik: {score}</p>
 				<p>Pozostały czas: {timeLeft}s</p>
 				{gameState === 'playing' && (
@@ -298,6 +353,66 @@ const AimTrainingGame = () => {
 					<button onClick={startGame}>Rozpocznij grę</button>
 				)}
 			</div>
+			{showModal && (
+				<div className={styles.modalOverlay}>
+					<div className={styles.modal}>
+						<h2>Ustawienia Gry</h2>
+						<label>
+							Liczba kulek (1-7):
+							<select
+								value={tempSettings.numCircles}
+								onChange={(e) =>
+									setTempSettings((prev) => ({
+										...prev,
+										numCircles: Number(e.target.value),
+									}))
+								}
+							>
+								{[...Array(7).keys()].map((num) => (
+									<option key={num + 1} value={num + 1}>
+										{num + 1}
+									</option>
+								))}
+							</select>
+						</label>
+						<label>
+							Rozmiar kulek:
+							<select
+								value={tempSettings.circleSizeKey}
+								onChange={(e) =>
+									setTempSettings((prev) => ({
+										...prev,
+										circleSizeKey: e.target.value,
+									}))
+								}
+							>
+								<option value='verySmall'>Bardzo Mała</option>
+								<option value='small'>Mała</option>
+								<option value='medium'>Średnia</option>
+								<option value='large'>Duża</option>
+								<option value='veryLarge'>Bardzo Duża</option>
+							</select>
+						</label>
+						<label>
+							<input
+								type='checkbox'
+								checked={tempSettings.enableMovement}
+								onChange={(e) =>
+									setTempSettings((prev) => ({
+										...prev,
+										enableMovement: e.target.checked,
+									}))
+								}
+							/>
+							Poruszanie się kulek
+						</label>
+						<div className={styles.modalButtons}>
+							<button onClick={saveSettings}>Zapisz</button>
+							<button onClick={cancelSettings}>Anuluj</button>
+						</div>
+					</div>
+				</div>
+			)}
 			<div className={styles.scoresContainer}>
 				<h3 className={styles.scoresTitle}>Twoje wyniki:</h3>
 				<table className={styles.scoresTable}>
