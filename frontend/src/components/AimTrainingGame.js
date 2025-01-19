@@ -295,7 +295,7 @@ const AimTrainingGame = () => {
 	};
 	return (
 		<div className={styles.aimTrainingGame}>
-			<h1>Gra Celności</h1>
+			<h1>Ćwiczenie Celności</h1>
 			<button
 				className={styles.settingsButton}
 				onClick={openModal}

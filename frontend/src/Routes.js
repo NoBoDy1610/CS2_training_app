@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import ForgotPassword from './auth/ForgotPassword';
 import ReactionTime from './components/ReactionTimeGame';
 import AimTrainingGame from './components/AimTrainingGame';
+import MapRadar from './components/MapRadar';
 import MapGuide from './components/MapGuide';
 import Tactics from './components/Tactics';
 import PlayerSettings from './components/PlayerSettings';
@@ -72,6 +73,22 @@ function AppRoutes() {
 				element={
 					<Layout>
 						<PlayerSettings />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/map-guide'
+				element={
+					<Layout>
+						<MapGuide />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/map-guide/:mapName'
+				element={
+					<Layout>
+						<MapRadar />
 					</Layout>
 				}
 			/>
