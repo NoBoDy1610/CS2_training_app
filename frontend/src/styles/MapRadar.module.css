@@ -3,15 +3,16 @@
 	width: 100%;
 	max-width: 900px;
 	margin: auto;
-}
-
-.mapImage {
+	text-align: center;
+  }
+  
+  .mapImage {
 	width: 100%;
 	display: block;
 	border-radius: 8px;
-}
-
-.mapLocation {
+  }
+  
+  .mapLocation {
 	position: absolute;
 	background-color: black;
 	color: white;
@@ -20,7 +21,34 @@
 	border-radius: 4px;
 	cursor: pointer;
 	transform: translate(-50%, -50%);
-}
+  }
+  
+  .levelSwitch {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+	gap: 10px;
+  }
+  
+  .levelSwitch button {
+	background-color: #222;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	font-size: 14px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background 0.3s ease-in-out;
+  }
+  
+  .levelSwitch button.active {
+	background-color: #ff9800;
+	color: white;
+  }
+  
+  .levelSwitch button:hover {
+	background-color: #ff5722;
+  }
 
 .locationPreview {
 	position: fixed;

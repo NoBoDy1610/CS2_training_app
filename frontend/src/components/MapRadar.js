@@ -4,85 +4,108 @@ import styles from '../styles/MapRadar.module.css';
 import mapData from '../data/mapData';
 
 const MapRadar = () => {
-	const { mapName } = useParams();
-	const map = mapData[mapName];
+  const { mapName } = useParams();
+  const map = mapData[mapName.toLowerCase()]; // Obsługa różnych wielkości liter w nazwie mapy
 
-	const [hoveredLocation, setHoveredLocation] = useState(null);
+  const [hoveredLocation, setHoveredLocation] = useState(null);
+  const [currentLevel, setCurrentLevel] = useState("upper");
 
-	if (!map) return <div>Mapa nie została znaleziona</div>;
+  if (!map) {
+    console.error(`Mapa "${mapName}" nie została znaleziona w mapData.`);
+    return <div>Mapa nie została znaleziona</div>;
+  }
 
-	const handleMouseEnter = (event, location) => {
-		const windowWidth = window.innerWidth;
-		const windowHeight = window.innerHeight;
-		const tooltipWidth = 350; // Szerokość tooltipa
-		const tooltipHeight = 250; // Wysokość tooltipa
+  // Sprawdzenie, czy mapa ma poziomy
+  const hasLevels = map.levels !== undefined;
+  const locations = hasLevels ? map.levels[currentLevel] : map.locations;
+  const radarImage = hasLevels ? (currentLevel === "upper" ? map.radarUpper : map.radarLower) : map.radar;
 
-		let tooltipX = event.clientX + 30; // Odległość od kursora
-		let tooltipY = event.clientY - 30;
+  const handleMouseEnter = (event, location) => {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const tooltipWidth = 350;
+    const tooltipHeight = 250;
 
-		// Sprawdzenie, czy tooltip wyjdzie poza prawą krawędź
-		if (tooltipX + tooltipWidth > windowWidth) {
-			tooltipX = event.clientX - tooltipWidth - 30; // Przesunięcie w lewo
-		}
+    let tooltipX = event.clientX + 30;
+    let tooltipY = event.clientY - 30;
 
-		// Sprawdzenie, czy tooltip wyjdzie poza dolną krawędź
-		if (tooltipY + tooltipHeight > windowHeight) {
-			tooltipY = event.clientY - tooltipHeight + 60; // Przesunięcie w górę
-		}
+    if (tooltipX + tooltipWidth > windowWidth) {
+      tooltipX = event.clientX - tooltipWidth - 30;
+    }
 
-		// Sprawdzenie, czy tooltip wyjdzie poza górną krawędź
-		if (tooltipY < 0) {
-			tooltipY = 10; // Minimalna odległość od góry
-		}
+    if (tooltipY + tooltipHeight > windowHeight) {
+      tooltipY = event.clientY - tooltipHeight + 60;
+    }
 
-		setHoveredLocation({
-			...location,
-			x: tooltipX,
-			y: tooltipY,
-		});
-	};
+    if (tooltipY < 0) {
+      tooltipY = 10;
+    }
 
-	const handleMouseLeave = () => {
-		setHoveredLocation(null);
-	};
+    setHoveredLocation({
+      ...location,
+      x: tooltipX,
+      y: tooltipY,
+    });
+  };
 
-	return (
-		<div className={styles.mapContainer}>
-			<img
-				src={map.radar}
-				alt={`Radar ${map.name}`}
-				className={styles.mapImage}
-			/>
+  const handleMouseLeave = () => {
+    setHoveredLocation(null);
+  };
 
-			{map.locations.map((location, index) => (
-				<div
-					key={index}
-					className={styles.mapLocation}
-					style={{ left: location.x, top: location.y }}
-					onMouseEnter={(event) => handleMouseEnter(event, location)}
-					onMouseLeave={handleMouseLeave}
-				>
-					{location.name}
-				</div>
-			))}
+  return (
+    <div className={styles.mapContainer}>
+      {/* Przełącznik poziomów (jeśli są) */}
+      {hasLevels && (
+        <div className={styles.levelSwitch}>
+          <button 
+            onClick={() => setCurrentLevel("upper")} 
+            className={currentLevel === "upper" ? styles.active : ""}
+          >
+            Górny poziom
+          </button>
+          <button 
+            onClick={() => setCurrentLevel("lower")} 
+            className={currentLevel === "lower" ? styles.active : ""}
+          >
+            Dolny poziom
+          </button>
+        </div>
+      )}
 
-			{hoveredLocation && (
-				<div
-					className={styles.locationPreview}
-					style={{
-						left: `${hoveredLocation.x}px`,
-						top: `${hoveredLocation.y}px`,
-					}}
-				>
-					<img src={hoveredLocation.image} alt={hoveredLocation.name} />
-					<div className={styles.locationDescription}>
-						<h3>{hoveredLocation.name}</h3>
-						<p>{hoveredLocation.description}</p>
-					</div>
-				</div>
-			)}
-		</div>
-	);
+      {/* Obraz mapy */}
+      <img src={radarImage} alt={`Radar ${map.name}`} className={styles.mapImage} />
+
+      {/* Miejscówki */}
+      {locations.map((location, index) => (
+        <div
+          key={index}
+          className={styles.mapLocation}
+          style={{ left: location.x, top: location.y }}
+          onMouseEnter={(event) => handleMouseEnter(event, location)}
+          onMouseLeave={handleMouseLeave}
+        >
+          {location.name}
+        </div>
+      ))}
+
+      {/* Podgląd miejscówki */}
+      {hoveredLocation && (
+        <div
+          className={styles.locationPreview}
+          style={{
+            left: `${hoveredLocation.x}px`,
+            top: `${hoveredLocation.y}px`,
+          }}
+        >
+          <img src={hoveredLocation.image} alt={hoveredLocation.name} />
+          <div className={styles.locationDescription}>
+            <h3>{hoveredLocation.name}</h3>
+            <p>{hoveredLocation.description}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default MapRadar;
