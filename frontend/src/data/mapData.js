@@ -291,6 +291,30 @@ const mapData = {
 		  { name: "Dywany", image: require("../assets/maps/anubis/anubis_carpets.jpg"), x: "79%", y: "58%", description: "Obejście na bombsite A." }
 		]
 	  },
+	  inferno: {
+		name: "Inferno",
+		radar: require("../assets/maps/inferno/inferno_radar.jpg"),
+		locations: [
+		  { name: "Bombsite A", image: require("../assets/maps/inferno/inferno_a.jpg"), x: "83%", y: "70%", description: "Miejsce podkładania bomby z charakterystycznym dzwonem i balkonem." },
+		  { name: "Bombsite B", image: require("../assets/maps/inferno/inferno_b.jpg"), x: "48%", y: "22%", description: "Zamknięty bombsite, ciężki do odbicia" },
+		  { name: "Środek", image: require("../assets/maps/inferno/inferno_mid.jpg"), x: "50%", y: "67%", description: "Kluczowe miejsce walki o kontrolę mapy." },
+		  { name: "Banan", image: require("../assets/maps/inferno/inferno_banana.jpg"), x: "45%", y: "51%", description: "Długi korytarz prowadzący do bombsite'u B, często kontrolowany przez CT." },
+		  { name: "Aparmatmenty", image: require("../assets/maps/inferno/inferno_apps.jpg"), x: "75%", y: "85%", description: "Pokoje mieszkalne nad A Site, używane do ataków na bombsite." },
+		  { name: "Biblioteka", image: require("../assets/maps/inferno/inferno_library.jpg"), x: "95%", y: "55%", description: "Idealne miejsce do przechwytywania graczy rotujących z B na A." },
+		  { name: "Miejsce startu CT", image: require("../assets/maps/inferno/inferno_ct.jpg"), x: "90%", y: "35%", description: "Punkt startowy drużyny antyterrorystów." },
+		  { name: "Miejsce startu T", image: require("../assets/maps/inferno/inferno_t.jpg"), x: "10%", y: "68%", description: "Punkt startowy drużyny terrorystów." },
+		  { name: "Pit", image: require("../assets/maps/inferno/inferno_pit.jpg"), x: "94%", y: "80%", description: "Kluczowa pozycja do obrony A Site, daje osłonę i dobry kąt widzenia." },
+		  { name: "Gala", image: require("../assets/maps/inferno/inferno_short.jpg"), x: "75%", y: "78%", description: "Szybkie przejście dla atakujących na A Site." },
+		  { name: "Długa", image: require("../assets/maps/inferno/inferno_long.jpg"), x: "72%", y: "55%", description: "Kluczowa ścieżka dla CT do rotacji między bombsite'ami." },
+		  { name: "Łącznik", image: require("../assets/maps/inferno/inferno_bridge.jpg"), x: "79%", y: "50%", description: "Przejście łączące długą i CT, często używane do szybkich rotacji." },
+		  { name: "Ruiny", image: require("../assets/maps/inferno/inferno_ruins.jpg"), x: "53%", y: "9%", description: "Przejście CT prowadzące do B Site." },
+		  { name: "Auto", image: require("../assets/maps/inferno/inferno_car.jpg"), x: "50%", y: "37%", description: "Miejsce często wykorzystywane do walki o kontrolę Banana." },
+		  { name: "Rampa", image: require("../assets/maps/inferno/inferno_ramp.jpg"), x: "30%", y: "65%", description: "Kluczowy punkt startowy dla atakujących na A Site." },
+		  { name: "Most", image: require("../assets/maps/inferno/inferno_bridge.jpg"), x: "34%", y: "80%", description: "Kluczowy punkt startowy dla atakujących na A Site." },
+		  { name: "Boiler", image: require("../assets/maps/inferno/inferno_boiler.jpg"), x: "65%", y: "75%", description: "Kluczowy punkt startowy dla atakujących na A Site." },
+		  { name: "Drugi środek", image: require("../assets/maps/inferno/inferno_2mid.jpg"), x: "50%", y: "80%", description: "Alternatywne przejście na Mid dla terrorystów." }
+		]
+	  },
 };
 
 export default mapData;

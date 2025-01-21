@@ -10,7 +10,7 @@ const maps = [
 	},
 	{
 		name: 'Inferno',
-		image: require('../assets/maps/inferno/inferno_background.jpeg'),
+		image: require('../assets/maps/inferno/inferno_background.jpg'),
 		logo: require('../assets/maps/inferno/inferno_logo.webp'),
 	},
 	{
