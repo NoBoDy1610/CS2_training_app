@@ -12,7 +12,7 @@ const MapRadar = () => {
 
   if (!map) {
     console.error(`Mapa "${mapName}" nie została znaleziona w mapData.`);
-    return <div>Mapa nie została znaleziona</div>;
+    return <div className={styles.errorMessage}>Mapa nie została znaleziona</div>;
   }
 
   // Sprawdzenie, czy mapa ma poziomy
@@ -23,21 +23,24 @@ const MapRadar = () => {
   const handleMouseEnter = (event, location) => {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    const tooltipWidth = 350;
+    const tooltipWidth = 380;
     const tooltipHeight = 250;
 
     let tooltipX = event.clientX + 30;
     let tooltipY = event.clientY - 30;
 
+    // Zapobieganie wychodzeniu poza ekran (prawo)
     if (tooltipX + tooltipWidth > windowWidth) {
       tooltipX = event.clientX - tooltipWidth - 30;
     }
 
+    // Zapobieganie wychodzeniu poza ekran (dół)
     if (tooltipY + tooltipHeight > windowHeight) {
-      tooltipY = event.clientY - tooltipHeight + 60;
+      tooltipY = event.clientY - tooltipHeight +60;
     }
 
-    if (tooltipY < 0) {
+    // Zapobieganie wychodzeniu poza ekran (góra)
+    if (tooltipY < 10) {
       tooltipY = 10;
     }
 

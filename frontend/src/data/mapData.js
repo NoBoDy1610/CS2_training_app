@@ -266,6 +266,31 @@ const mapData = {
 			],
 		},
 	},
+	anubis: {
+		name: "Anubis",
+		radar: require("../assets/maps/anubis/anubis_radar.jpg"),
+		locations: [
+		  { name: "Bombsite A", image: require("../assets/maps/anubis/anubis_a.jpg"), x: "75%", y: "27%", description: "Miejsce podkładania bomby, otoczone wieloma wejściami." },
+		  { name: "Bombsite B", image: require("../assets/maps/anubis/anubis_b.jpg"), x: "32%", y: "50%", description: "Bombsite idealny do szybkich ataków." },
+		  { name: "Środek", image: require("../assets/maps/anubis/anubis_mid.jpg"), x: "50%", y: "60%", description: "Kluczowa część mapy, kontrola środka ułatwia ataki na oba bombsite'y." },
+		  { name: "Łącznik", image: require("../assets/maps/anubis/anubis_con.jpg"), x: "40%", y: "60%", description: "Łączy bombsite B z wodą." },
+		  { name: "Woda", image: require("../assets/maps/anubis/anubis_water.jpg"), x: "70%", y: "58%", description: "Teren pod bombsite'em B, można się tam łatwo przekraść do łącznika." },
+		  { name: "Schody", image: require("../assets/maps/anubis/anubis_stairs.jpg"), x: "70%", y: "70%", description: "Daje przewagę wysokości w okolicy wody." },
+		  { name: "Pałac", image: require("../assets/maps/anubis/anubis_temple.jpg"), x: "46%", y: "41%", description: "Jedno z kluczowych miejsc obrony bombsite'u B." },
+		  { name: "Miejsce startu T", image: require("../assets/maps/anubis/anubis_t.jpg"), x: "50%", y: "92%", description: "Punkt startowy drużyny terrorystów." },
+		  { name: "Miejsce startu CT", image: require("../assets/maps/anubis/anubis_ct.jpg"), x: "43%", y: "23%", description: "Punkt startowy drużyny antyterrorystów." },
+		  { name: "Dziupla", image: require("../assets/maps/anubis/anubis_heaven.jpg"), x: "65%", y: "27%", description: "Wysoko położona pozycja, idealna do obserwacji A Site." },
+		  { name: "Filar", image: require("../assets/maps/anubis/anubis_pillar.jpg"), x: "84%", y: "27%", description: "Kluczowa osłona na bombsite A." },
+		  { name: "Exit", image: require("../assets/maps/anubis/anubis_exit.jpg"), x: "50%", y: "33%", description: "Punkt rotacji między bombsite'ami." },
+		  { name: "Ninja", image: require("../assets/maps/anubis/anubis_ninja.jpg"), x: "39%", y: "50%", description: "Kąt do ukrycia się przez graczy." },
+		  { name: "Kamera", image: require("../assets/maps/anubis/anubis_camera.jpg"), x: "62%", y: "38.5%", description: "Łącznik między środkiem a bombsite A" },
+		  { name: "Okno", image: require("../assets/maps/anubis/anubis_window.jpg"), x: "52%", y: "48%", description: "Otwór prowadzący do środkowej części mapy." },
+		  { name: "Main", image: require("../assets/maps/anubis/anubis_main.jpg"), x: "83%", y: "43%", description: "Główne wejście na A Site." },
+		  { name: "Main B", image: require("../assets/maps/anubis/anubis_mainb.jpg"), x: "20%", y: "60%", description: "Główne wejście na B Site." },
+		  { name: "Jaskinia", image: require("../assets/maps/anubis/anubis_cave.jpg"), x: "36%", y: "34%", description: "Najszybsza droga antyterrorystów na B." },
+		  { name: "Dywany", image: require("../assets/maps/anubis/anubis_carpets.jpg"), x: "79%", y: "58%", description: "Obejście na bombsite A." }
+		]
+	  },
 };
 
 export default mapData;

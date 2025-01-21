@@ -1,28 +1,20 @@
+/* Kontener mapy */
 .mapContainer {
 	position: relative;
 	width: 100%;
-	max-width: 900px;
+	max-width: 1000px;
 	margin: auto;
 	text-align: center;
   }
   
+  /* Obrazek mapy */
   .mapImage {
 	width: 100%;
 	display: block;
 	border-radius: 8px;
   }
   
-  .mapLocation {
-	position: absolute;
-	background-color: black;
-	color: white;
-	padding: 4px 6px;
-	font-size: 12px;
-	border-radius: 4px;
-	cursor: pointer;
-	transform: translate(-50%, -50%);
-  }
-  
+  /* Przyciski do zmiany poziomu mapy */
   .levelSwitch {
 	display: flex;
 	justify-content: center;
@@ -43,14 +35,28 @@
   
   .levelSwitch button.active {
 	background-color: #ff9800;
-	color: white;
   }
   
   .levelSwitch button:hover {
 	background-color: #ff5722;
   }
-
-.locationPreview {
+  
+  /* Miejscówki */
+  .mapLocation {
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.8);
+	color: white;
+	padding: 6px 8px;
+	font-size: 13px;
+	border-radius: 5px;
+	cursor: pointer;
+	transform: translate(-50%, -50%);
+	white-space: nowrap;
+	font-weight: bold;
+  }
+  
+  /* Podgląd miejscówki */
+  .locationPreview {
 	position: fixed;
 	background: rgba(255, 255, 255, 0.98);
 	border-radius: 12px;
@@ -59,30 +65,41 @@
 	align-items: center;
 	box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
 	z-index: 100;
-	width: 350px;
+	width: 380px;
 	max-height: 250px;
-}
-
-.locationPreview img {
-	width: 180px;
-	height: 140px;
+  }
+  
+  /* Zdjęcie miejscówki */
+  .locationPreview img {
+	width: 200px;
+	height: 150px;
 	object-fit: cover;
 	margin-right: 15px;
 	border-radius: 8px;
-}
-
-.locationDescription {
-	max-width: 150px;
-}
-
-.locationDescription h3 {
+  }
+  
+  /* Opis miejscówki */
+  .locationDescription {
+	max-width: 160px;
+  }
+  
+  .locationDescription h3 {
 	margin: 0;
 	font-size: 16px;
 	font-weight: bold;
-}
-
-.locationDescription p {
+  }
+  
+  .locationDescription p {
 	margin: 5px 0 0;
 	font-size: 14px;
 	line-height: 1.4;
-}
+  }
+  
+  /* Obsługa błędu (gdy mapa nie jest znaleziona) */
+  .errorMessage {
+	text-align: center;
+	font-size: 18px;
+	color: red;
+	margin-top: 20px;
+  }
+  
