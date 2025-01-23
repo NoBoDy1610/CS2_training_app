@@ -546,6 +546,32 @@ const mapData = {
 			},
 		],
 	},
+	train: {
+		name: "Train",
+		radar: require("../assets/maps/train/train_radar.jpg"),
+		locations: [
+		  { name: "Bombsite A", image: require("../assets/maps/train/train_a.jpg"), x: "65%", y: "53%", description: "Miejsce podkładania bomby na bombsite A." },
+		  { name: "Bombsite B", image: require("../assets/maps/train/train_b.jpg"), x: "54%", y: "81.5%", description: "Miejsce podkładania bomby na bombsite B." },
+		  { name: "Punkt startu CT", image: require("../assets/maps/train/train_ct.jpg"), x: "92%", y: "85%", description: "Punkt startowy antyterrorystów." },
+		  { name: "Punkt startu T", image: require("../assets/maps/train/train_t.jpg"), x: "13%", y: "17%", description: "Punkt startowy terrorystów." },
+		  { name: "Ivy", image: require("../assets/maps/train/train_ivy.jpg"), x: "83%", y: "38%", description: "Długi korytarz na lewą stronę mapy, często kontrolowany przez snajperów." },
+		  { name: "Olof", image: require("../assets/maps/train/train_olof.jpg"), x: "50%", y: "35%", description: "Popularna pozycja na A Site, często wykorzystywana do osłony." },
+		  { name: "Heaven", image: require("../assets/maps/train/train_heaven.jpg"), x: "39%", y: "92%", description: "Wysoka pozycja nad B Site, pozwalająca na dobry przegląd sytuacji." },
+		  { name: "Rampa", image: require("../assets/maps/train/train_ramp.jpg"), x: "38%", y: "71%", description: "Przejście prowadzące na B Site." },
+		  { name: "Drabinkowy", image: require("../assets/maps/train/train_ladder.jpg"), x: "40%", y: "59%", description: "Przejście z dolnej części mapy na górę." },
+		  { name: "Olejowy", image: require("../assets/maps/train/train_oil.jpg"), x: "61%", y: "88%", description: "Pociąg na bombsite B, kluczowa pozycja dla obrony." },
+		  { name: "Main", image: require("../assets/maps/train/train_main.jpg"), x: "38%", y: "40%", description: "Główne wejście terrorystów na A Site." },
+		  { name: "Domek", image: require("../assets/maps/train/train_house.jpg"), x: "30.5%", y: "65%", description: "Budynek blisko B Site." },
+		  { name: "Apartamenty", image: require("../assets/maps/train/train_apps.jpg"), x: "35%", y: "50%", description: "Górne przejście prowadzące na B Site." },
+		  { name: "Pod gniazdem", image: require("../assets/maps/train/train_under.jpg"), x: "71%", y: "59%", description: "Wnęka za bombsite A" },
+		  { name: "Łącznik", image: require("../assets/maps/train/train_con.jpg"), x: "65%", y: "66%", description: "Łączy bombsite A z B i jest kluczową pozycją dla rotacji." },
+		  { name: "MTV", image: require("../assets/maps/train/train_mtv.jpg"), x: "68%", y: "33%", description: "Wnęka w okolicy pociągu numer 5." },
+		  { name: "Długa", image: require("../assets/maps/train/train_long.jpg"), x: "80%", y: "12%", description: "Przejście terrorystów do Ivy." },
+		  { name: "Pociąg numer 6", image: require("../assets/maps/train/train_6.jpg"), x: "68%", y: "39%", description: "Pociąg od strony Ivy." },
+		  { name: "Pociąg numer 5", image: require("../assets/maps/train/train_5.jpg"), x: "53%", y: "44%", description: "Pociąg utrudniający wejście na bombsite A dla terrorystów." },
+		  { name: "Stary bombsite", image: require("../assets/maps/train/train_old.jpg"), x: "85%", y: "53%", description: "Miejsce starego bombsite A." },
+		],
+	  },
 };
 
 export default mapData;
