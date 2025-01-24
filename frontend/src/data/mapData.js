@@ -826,8 +826,7 @@ const mapData = {
 				image: require('../assets/maps/dust2/dust2_pit.jpg'),
 				x: '86%',
 				y: '63%',
-				description:
-					'Miejsce na długiej do kotroli oraz walki o pozycje.',
+				description: 'Miejsce na długiej do kotroli oraz walki o pozycje.',
 			},
 			{
 				name: 'Niebieska',
@@ -850,8 +849,146 @@ const mapData = {
 				image: require('../assets/maps/dust2/dust2_green.jpg'),
 				x: '12%',
 				y: '15%',
+				description: 'Miejsce na B do osłony przy obronie bombsitea.',
+			},
+		],
+	},
+	ancient: {
+		name: 'Ancient',
+		radar: require('../assets/maps/ancient/ancient_radar.jpg'),
+		locations: [
+			{
+				name: 'Bombiste A',
+				image: require('../assets/maps/ancient/ancient_a.jpg'),
+				x: '30%',
+				y: '26%',
 				description:
-					'Miejsce na B do osłony przy obronie bombsitea.',
+					'Miejsce podkładania bomby na bombsite A, kluczowa pozycja dla atakujących.',
+			},
+			{
+				name: 'Bombsite B',
+				image: require('../assets/maps/ancient/ancient_b.jpg'),
+				x: '74%',
+				y: '40%',
+				description:
+					'Miejsce podkładania bomby na bombsite B, często bronione przez CT w trójkę.',
+			},
+			{
+				name: 'Miejsce startu T',
+				image: require('../assets/maps/ancient/ancient_t.jpg'),
+				x: '48%',
+				y: '87%',
+				description: 'Początkowa lokalizacja terrorystów.',
+			},
+			{
+				name: 'Miejsce startu CT',
+				image: require('../assets/maps/ancient/ancient_ct.jpg'),
+				x: '51%',
+				y: '10%',
+				description: 'Początkowa lokalizacja antyterrorystów.',
+			},
+			{
+				name: 'Środek',
+				image: require('../assets/maps/ancient/ancient_mid.jpg'),
+				x: '48%',
+				y: '50%',
+				description:
+					'Kluczowy obszar mapy, zapewniający kontrolę nad rotacjami.',
+			},
+			{
+				name: 'Donut',
+				image: require('../assets/maps/ancient/ancient_donut.jpg'),
+				x: '30%',
+				y: '45%',
+				description: 'Przejście pomiędzy midem a A Site w kształcie pączka',
+			},
+			{
+				name: 'Zakręt',
+				image: require('../assets/maps/ancient/ancient_elbow.jpg'),
+				x: '40%',
+				y: '57%',
+				description:
+					'Pozycja taktyczna pozwalająca na rotacje i kontrolę nad midem.',
+			},
+			{
+				name: 'Speedway',
+				image: require('../assets/maps/ancient/ancient_speedway.jpg'),
+				x: '75%',
+				y: '57%',
+				description: 'Trasa prowadząca do B Site.',
+			},
+			{
+				name: 'Main',
+				image: require('../assets/maps/ancient/ancient_main.jpg'),
+				x: '18%',
+				y: '40%',
+				description: 'Przejście prowadzące do bombsite A.',
+			},
+			{
+				name: 'Okno',
+				image: require('../assets/maps/ancient/ancient_red.jpg'),
+				x: '47%',
+				y: '34%',
+				description: 'Obszar często wykorzystywany do kontroli A.',
+			},
+			{
+				name: 'Jaskinia',
+				image: require('../assets/maps/ancient/ancient_cave.jpg'),
+				x: '63%',
+				y: '52%',
+				description: 'Kluczowa pozycja przy wejściu na bombsite B.',
+			},
+			{
+				name: 'XBox',
+				image: require('../assets/maps/ancient/ancient_xbox.jpg'),
+				x: '22%',
+				y: '25%',
+				description: 'Podwyższona pozycja często używana do obrony A.',
+			},
+			{
+				name: 'Rampa',
+				image: require('../assets/maps/ancient/ancient_ramp.jpg'),
+				x: '83%',
+				y: '55%',
+				description: 'Wejście na bombsite A od strony terrorystów.',
+			},
+			{
+				name: 'Pałac',
+				image: require('../assets/maps/ancient/ancient_temple.jpg'),
+				x: '30%',
+				y: '15%',
+				description:
+					"Obszar kontrolowany przez CT, kluczowy do retake'u A Site.",
+			},
+			{
+				name: 'Ninja',
+				image: require('../assets/maps/ancient/ancient_ninja.jpg'),
+				x: '72%',
+				y: '46%',
+				description:
+					'Ukryta pozycja na bombsite A, często wykorzystywana do clutchowania.',
+			},
+			{
+				name: 'Heaven',
+				image: require('../assets/maps/ancient/ancient_heaven.jpg'),
+				x: '55%',
+				y: '57%',
+				description:
+					'Pozycja na środku do współpracy broniących oraz do rotacji.',
+			},
+			{
+				name: 'Długa',
+				image: require('../assets/maps/ancient/ancient_long.jpg'),
+				x: '83%',
+				y: '30%',
+				description: 'Częsta pozycja do obrony bombsite B.',
+			},
+			{
+				name: 'Gala',
+				image: require('../assets/maps/ancient/ancient_short.jpg'),
+				x: '71%',
+				y: '30%',
+				description: 'Krótsza droga rotacji na B.',
 			},
 		],
 	},
