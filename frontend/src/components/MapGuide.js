@@ -29,7 +29,7 @@ const maps = [
 		logo: require('../assets/maps/ancient/ancient_logo.webp'),
 	},
 	{
-		name: 'Dust II',
+		name: 'Dust2',
 		image: require('../assets/maps/dust2/dust2_background.jpg'),
 		logo: require('../assets/maps/dust2/dust2_logo.webp'),
 	},

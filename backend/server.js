@@ -51,11 +51,15 @@ app.post('/register', async (req, res) => {
 
 	try {
 		// Sprawdzenie, czy email już istnieje
-		const existingUser = await User.findOne({ email });
-		if (existingUser) {
-			return res
-				.status(400)
-				.json({ message: 'Użytkownik z podanym adresem email już istnieje.' });
+		const existingEmail = await User.findOne({ email });
+		if (existingEmail) {
+			return res.status(400).json({ message: 'Użytkownik z podanym adresem email już istnieje.' });
+		}
+
+		// Sprawdzenie, czy username już istnieje
+		const existingUsername = await User.findOne({ username });
+		if (existingUsername) {
+			return res.status(400).json({ message: 'Nazwa użytkownika jest już zajęta.' });
 		}
 
 		// Hashowanie hasła
@@ -76,6 +80,7 @@ app.post('/register', async (req, res) => {
 		res.status(500).json({ message: 'Błąd serwera.' });
 	}
 });
+
 
 // Logowanie
 app.post('/login', async (req, res) => {
