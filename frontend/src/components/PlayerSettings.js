@@ -1,125 +1,150 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import playersData from '../data/playersData';
 import styles from '../styles/PlayerSettings.module.css';
 
 const ProSettingsTable = () => {
-	const [sortedColumn, setSortedColumn] = useState(null);
-	const [sortDirection, setSortDirection] = useState('asc');
+    const [sortedColumn, setSortedColumn] = useState(null);
+    const [sortDirection, setSortDirection] = useState('asc');
+    const tableRef = useRef(null);
+    const topScrollRef = useRef(null);
+    const bottomScrollRef = useRef(null);
 
-	// Sortowanie danych
-	const sortedData = [...playersData].sort((a, b) => {
-		if (!sortedColumn) return 0;
+    // Funkcja do synchronizacji przewijania górnego i dolnego paska
+    const syncScroll = (source) => {
+        if (!tableRef.current) return;
+        const scrollLeft = source.scrollLeft;
+        topScrollRef.current.scrollLeft = scrollLeft;
+        bottomScrollRef.current.scrollLeft = scrollLeft;
+    };
 
-		const valueA = a[sortedColumn] ?? ''; // Zapobiega błędom na undefined
-		const valueB = b[sortedColumn] ?? '';
+    useEffect(() => {
+        const topScroll = topScrollRef.current;
+        const bottomScroll = bottomScrollRef.current;
 
-		if (typeof valueA === 'number' && typeof valueB === 'number') {
-			return sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
-		} else {
-			return sortDirection === 'asc'
-				? valueA.toString().localeCompare(valueB.toString())
-				: valueB.toString().localeCompare(valueA.toString());
-		}
-	});
+        if (topScroll && bottomScroll) {
+            topScroll.addEventListener('scroll', () => syncScroll(topScroll));
+            bottomScroll.addEventListener('scroll', () => syncScroll(bottomScroll));
+        }
 
-	// Funkcja do zmiany sortowania
-	const handleSort = (column) => {
-		if (sortedColumn === column) {
-			setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-		} else {
-			setSortedColumn(column);
-			setSortDirection('asc');
-		}
-	};
+        return () => {
+            if (topScroll && bottomScroll) {
+                topScroll.removeEventListener('scroll', () => syncScroll(topScroll));
+                bottomScroll.removeEventListener('scroll', () => syncScroll(bottomScroll));
+            }
+        };
+    }, []);
 
-	// Funkcja zwracająca ikonę sortowania
-	const getSortIcon = (column) => {
-		if (sortedColumn !== column) return '⬍'; // Brak sortowania
-		return sortDirection === 'asc' ? '⬆' : '⬇';
-	};
+    // Funkcja do przewijania w lewo
+    const scrollLeft = () => {
+        if (tableRef.current) {
+            tableRef.current.scrollLeft -= 200; // Przewija o 200px
+            syncScroll(tableRef.current);
+        }
+    };
 
-	return (
-		<div className={styles.container}>
-			<h2>Pro Players Settings</h2>
+    // Funkcja do przewijania w prawo
+    const scrollRight = () => {
+        if (tableRef.current) {
+            tableRef.current.scrollLeft += 200; // Przewija o 200px
+            syncScroll(tableRef.current);
+        }
+    };
 
-			<table className={styles.table}>
-				<thead>
-					<tr>
-						<th onClick={() => handleSort('team')}>
-							Team {getSortIcon('team')}
-						</th>
-						<th onClick={() => handleSort('player')}>
-							Player {getSortIcon('player')}
-						</th>
-						<th onClick={() => handleSort('role')}>
-							Role {getSortIcon('role')}
-						</th>
-						<th onClick={() => handleSort('mouse')}>
-							Mouse {getSortIcon('mouse')}
-						</th>
-						<th onClick={() => handleSort('hz')}>Hz {getSortIcon('hz')}</th>
-						<th onClick={() => handleSort('dpi')}>DPI {getSortIcon('dpi')}</th>
-						<th onClick={() => handleSort('sens')}>
-							Sens {getSortIcon('sens')}
-						</th>
-						<th onClick={() => handleSort('edpi')}>
-							eDPI {getSortIcon('edpi')}
-						</th>
-						<th onClick={() => handleSort('zoomSens')}>
-							Zoom Sens {getSortIcon('zoomSens')}
-						</th>
-						<th onClick={() => handleSort('monitor')}>
-							Monitor {getSortIcon('monitor')}
-						</th>
-						<th onClick={() => handleSort('resolution')}>
-							Resolution {getSortIcon('resolution')}
-						</th>
-						<th onClick={() => handleSort('aspectRatio')}>
-							Aspect Ratio {getSortIcon('aspectRatio')}
-						</th>
-						<th onClick={() => handleSort('scalingMode')}>
-							Scaling Mode {getSortIcon('scalingMode')}
-						</th>
-						<th onClick={() => handleSort('mousepad')}>
-							Mousepad {getSortIcon('mousepad')}
-						</th>
-						<th onClick={() => handleSort('keyboard')}>
-							Keyboard {getSortIcon('keyboard')}
-						</th>
-						<th onClick={() => handleSort('headset')}>
-							Headset {getSortIcon('headset')}
-						</th>
-						<th onClick={() => handleSort('chair')}>
-							Chair {getSortIcon('chair')}
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{sortedData.map((player, index) => (
-						<tr key={index}>
-							<td>{player.team ?? 'N/A'}</td>
-							<td>{player.player ?? 'N/A'}</td>
-							<td>{player.role ?? 'N/A'}</td>
-							<td>{player.mouse ?? 'N/A'}</td>
-							<td>{player.hz ?? 'N/A'}</td>
-							<td>{player.dpi ?? 'N/A'}</td>
-							<td>{player.sens ?? 'N/A'}</td>
-							<td>{player.edpi ?? 'N/A'}</td>
-							<td>{player.zoomSens ?? 'N/A'}</td>
-							<td>{player.monitor ?? 'N/A'}</td>
-							<td>{player.resolution ?? 'N/A'}</td>
-							<td>{player.aspectRatio ?? 'N/A'}</td>
-							<td>{player.scalingMode ?? 'N/A'}</td>
-							<td>{player.mousepad ?? 'N/A'}</td>
-							<td>{player.keyboard ?? 'N/A'}</td>
-							<td>{player.headset ?? 'N/A'}</td>
-							<td>{player.chair ?? 'N/A'}</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
-	);
+    // Sortowanie danych
+    const sortedData = [...playersData].sort((a, b) => {
+        if (!sortedColumn) return 0;
+
+        const valueA = a[sortedColumn] || '';
+        const valueB = b[sortedColumn] || '';
+
+        if (typeof valueA === 'number') {
+            return sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
+        } else {
+            return sortDirection === 'asc'
+                ? valueA.localeCompare(valueB)
+                : valueB.localeCompare(valueA);
+        }
+    });
+
+    // Funkcja do zmiany sortowania
+    const handleSort = (column) => {
+        if (sortedColumn === column) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortedColumn(column);
+            setSortDirection('asc');
+        }
+    };
+
+    return (
+        <div className={styles.container}>
+            <h2>Pro Players Settings</h2>
+
+            {/* ✅ Strzałki do przewijania */}
+            <div className={styles.controls}>
+                <button className={styles.scrollBtn} onClick={scrollLeft}>◄</button>
+                <div className={styles.scrollWrapper} ref={topScrollRef}>
+                    <div className={styles.scrollBar}></div>
+                </div>
+                <button className={styles.scrollBtn} onClick={scrollRight}>►</button>
+            </div>
+
+            {/* ✅ Wrapper z przewijaniem */}
+            <div className={styles.tableWrapper} ref={tableRef}>
+                <table className={styles.table}>
+                    <thead>
+                        <tr>
+                            <th onClick={() => handleSort('team')}>Team</th>
+                            <th onClick={() => handleSort('player')}>Player</th>
+                            <th onClick={() => handleSort('role')}>Role</th>
+                            <th onClick={() => handleSort('mouse')}>Mouse</th>
+                            <th onClick={() => handleSort('hz')}>Hz</th>
+                            <th onClick={() => handleSort('dpi')}>DPI</th>
+                            <th onClick={() => handleSort('sens')}>Sens</th>
+                            <th onClick={() => handleSort('edpi')}>eDPI</th>
+                            <th onClick={() => handleSort('zoomSens')}>Zoom Sens</th>
+                            <th onClick={() => handleSort('monitor')}>Monitor</th>
+                            <th onClick={() => handleSort('resolution')}>Resolution</th>
+                            <th onClick={() => handleSort('aspectRatio')}>Aspect Ratio</th>
+                            <th onClick={() => handleSort('scalingMode')}>Scaling Mode</th>
+                            <th onClick={() => handleSort('mousepad')}>Mousepad</th>
+                            <th onClick={() => handleSort('keyboard')}>Keyboard</th>
+                            <th onClick={() => handleSort('headset')}>Headset</th>
+                            <th onClick={() => handleSort('chair')}>Chair</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sortedData.map((player, index) => (
+                            <tr key={index}>
+                                <td>{player.team}</td>
+                                <td>{player.player}</td>
+                                <td>{player.role}</td>
+                                <td>{player.mouse}</td>
+                                <td>{player.hz}</td>
+                                <td>{player.dpi}</td>
+                                <td>{player.sens}</td>
+                                <td>{player.edpi}</td>
+                                <td>{player.zoomSens}</td>
+                                <td>{player.monitor}</td>
+                                <td>{player.resolution}</td>
+                                <td>{player.aspectRatio}</td>
+                                <td>{player.scalingMode}</td>
+                                <td>{player.mousepad}</td>
+                                <td>{player.keyboard}</td>
+                                <td>{player.headset}</td>
+                                <td>{player.chair}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* ✅ Dolny suwak */}
+            <div className={styles.scrollWrapper} ref={bottomScrollRef}>
+                <div className={styles.scrollBar}></div>
+            </div>
+        </div>
+    );
 };
 
 export default ProSettingsTable;
