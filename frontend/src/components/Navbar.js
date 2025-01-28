@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Modal from './Modal';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
@@ -9,6 +10,8 @@ const Navbar = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [modalContent, setModalContent] = useState('login');
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const token = sessionStorage.getItem('token'); // Zmiana na sessionStorage
@@ -39,6 +42,7 @@ const Navbar = () => {
 		sessionStorage.removeItem('token');
 		window.dispatchEvent(new Event('userLoggedOut')); // Powiadom inne komponenty
 		setIsLoggedIn(false); // Zaktualizuj stan
+		navigate('/');
 	};
 
 	const handleLoginSuccess = () => {

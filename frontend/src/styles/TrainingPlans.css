@@ -1,0 +1,18 @@
+.training-plans {
+	margin-top: 20px;
+	padding: 15px;
+	background: #e9f5ff;
+	border-radius: 8px;
+	text-align: center;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.training-plans h2 {
+	font-size: 20px;
+	color: #007bff;
+}
+
+.training-plans p {
+	font-size: 14px;
+	color: #555;
+}

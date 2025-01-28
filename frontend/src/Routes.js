@@ -11,6 +11,9 @@ import MapRadar from './components/MapRadar';
 import MapGuide from './components/MapGuide';
 import Tactics from './components/Tactics';
 import PlayerSettings from './components/PlayerSettings';
+import About from './components/About';
+import TrainingPlans from './components/TrainingPlans';
+import Account from './components/Account';
 
 const Layout = ({ children }) => (
 	<>
@@ -89,6 +92,30 @@ function AppRoutes() {
 				element={
 					<Layout>
 						<MapRadar />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/about'
+				element={
+					<Layout>
+						<About />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/training-plans'
+				element={
+					<Layout>
+						<TrainingPlans />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/profile'
+				element={
+					<Layout>
+						<Account />
 					</Layout>
 				}
 			/>

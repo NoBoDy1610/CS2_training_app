@@ -24,7 +24,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 const authenticateToken = (req, res, next) => {
 	const token = req.header('Authorization')?.split(' ')[1];
 	if (!token) {
-		return res.status(401).json({ message: 'Brak tokena uwierzytelniającego.' });
+		return res
+			.status(401)
+			.json({ message: 'Brak tokena uwierzytelniającego.' });
 	}
 	try {
 		const decoded = jwt.verify(token, JWT_SECRET);
@@ -53,13 +55,17 @@ app.post('/register', async (req, res) => {
 		// Sprawdzenie, czy email już istnieje
 		const existingEmail = await User.findOne({ email });
 		if (existingEmail) {
-			return res.status(400).json({ message: 'Użytkownik z podanym adresem email już istnieje.' });
+			return res
+				.status(400)
+				.json({ message: 'Użytkownik z podanym adresem email już istnieje.' });
 		}
 
 		// Sprawdzenie, czy username już istnieje
 		const existingUsername = await User.findOne({ username });
 		if (existingUsername) {
-			return res.status(400).json({ message: 'Nazwa użytkownika jest już zajęta.' });
+			return res
+				.status(400)
+				.json({ message: 'Nazwa użytkownika jest już zajęta.' });
 		}
 
 		// Hashowanie hasła
@@ -81,7 +87,6 @@ app.post('/register', async (req, res) => {
 	}
 });
 
-
 // Logowanie
 app.post('/login', async (req, res) => {
 	const { email, password } = req.body;
@@ -95,13 +100,17 @@ app.post('/login', async (req, res) => {
 		// Znajdź użytkownika po emailu
 		const user = await User.findOne({ email });
 		if (!user) {
-			return res.status(400).json({ message: 'Nieprawidłowy email lub hasło.' });
+			return res
+				.status(400)
+				.json({ message: 'Nieprawidłowy email lub hasło.' });
 		}
 
 		// Sprawdź poprawność hasła
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
-			return res.status(400).json({ message: 'Nieprawidłowy email lub hasło.' });
+			return res
+				.status(400)
+				.json({ message: 'Nieprawidłowy email lub hasło.' });
 		}
 
 		// Generowanie tokena JWT
@@ -152,9 +161,11 @@ app.post('/score', authenticateToken, async (req, res) => {
 		user.scores.push({ time });
 		await user.save();
 
-		res.status(200).json({ message: 'Wynik zapisany pomyślnie!', savedTime: time });
+		res
+			.status(200)
+			.json({ message: 'Wynik zapisany pomyślnie!', savedTime: time });
 	} catch (error) {
-		console.error("Błąd serwera podczas zapisywania wyniku:", error);
+		console.error('Błąd serwera podczas zapisywania wyniku:', error);
 		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
 	}
 });
@@ -177,41 +188,101 @@ app.get('/scores', authenticateToken, async (req, res) => {
 // Pobranie wyników Aim Training
 app.get('/aim-training-scores', authenticateToken, async (req, res) => {
 	try {
-	  const user = await User.findById(req.user.id);
-	  if (!user) {
-		return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
-	  }
-	  res.status(200).json(user.aimTrainingScores || []); // Zwróć wyniki gry Aim Training
+		const user = await User.findById(req.user.id);
+		if (!user) {
+			return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
+		}
+		res.status(200).json(user.aimTrainingScores || []); // Zwróć wyniki gry Aim Training
 	} catch (error) {
-	  console.error('Błąd podczas pobierania wyników Aim Training:', error);
-	  res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
+		console.error('Błąd podczas pobierania wyników Aim Training:', error);
+		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
 	}
-  });
-  
-  // Zapisanie wyniku Aim Training
-  app.post('/aim-training-scores', authenticateToken, async (req, res) => {
+});
+
+// Zapisanie wyniku Aim Training
+app.post('/aim-training-scores', authenticateToken, async (req, res) => {
 	const { points } = req.body;
-  
+
 	if (typeof points !== 'number') {
-	  return res.status(400).json({ error: 'Pole `points` musi być liczbą.' });
+		return res.status(400).json({ error: 'Pole `points` musi być liczbą.' });
 	}
-  
+
 	try {
-	  const user = await User.findById(req.user.id);
-	  if (!user) {
-		return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
-	  }
-  
-	  user.aimTrainingScores.push({ points });
-	  await user.save();
-  
-	  res.status(200).json({ message: 'Wynik zapisany pomyślnie!', savedPoints: points });
+		const user = await User.findById(req.user.id);
+		if (!user) {
+			return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
+		}
+
+		user.aimTrainingScores.push({ points });
+		await user.save();
+
+		res
+			.status(200)
+			.json({ message: 'Wynik zapisany pomyślnie!', savedPoints: points });
 	} catch (error) {
-	  console.error('Błąd podczas zapisywania wyniku Aim Training:', error);
-	  res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
+		console.error('Błąd podczas zapisywania wyniku Aim Training:', error);
+		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
 	}
-  });  
-  
+});
+
+//Zmiana hasła
+app.post('/change-password', authenticateToken, async (req, res) => {
+	try {
+		const { currentPassword, newPassword } = req.body;
+		const user = await User.findById(req.user.id);
+
+		if (!user) {
+			return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+		}
+
+		const isMatch = await bcrypt.compare(currentPassword, user.password);
+		if (!isMatch) {
+			return res.status(400).json({ message: 'Nieprawidłowe obecne hasło' });
+		}
+
+		user.password = await bcrypt.hash(newPassword, 10);
+		await user.save();
+
+		res.json({ message: 'Hasło zostało zmienione!' });
+	} catch (error) {
+		res.status(500).json({ message: 'Błąd serwera.' });
+	}
+});
+
+//Pobieranie wyników użytkownika
+app.get('/results', authenticateToken, async (req, res) => {
+	try {
+		const user = await User.findById(req.user.id).select(
+			'scores aimTrainingScores'
+		);
+
+		if (!user) {
+			return res.status(404).json({ message: 'Nie znaleziono użytkownika.' });
+		}
+
+		const reactionResults = user.scores.map((score) => ({
+			type: 'reactionTime',
+			time: score.time,
+			date: score.date,
+		}));
+
+		const aimTrainingResults = user.aimTrainingScores.map((score) => ({
+			type: 'aimTraining',
+			points: score.points,
+			date: score.date,
+		}));
+
+		console.log('✅ Wyniki użytkownika:', [
+			...reactionResults,
+			...aimTrainingResults,
+		]);
+
+		res.status(200).json([...reactionResults, ...aimTrainingResults]);
+	} catch (error) {
+		res.status(500).json({ message: 'Błąd serwera.' });
+	}
+});
+
 // Start server
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Serwer działa na porcie ${PORT}`));

@@ -420,7 +420,7 @@ const AimTrainingGame = () => {
 						<tr>
 							<th>#</th>
 							<th onClick={() => sortScores('points')}>
-								Wynik (ms) {getSortArrow('points')}
+								Wynik {getSortArrow('points')}
 							</th>
 							<th onClick={() => sortScores('date')}>
 								Data {getSortArrow('date')}

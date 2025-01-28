@@ -45,23 +45,53 @@ const ProSettingsTable = () => {
 			<table className={styles.table}>
 				<thead>
 					<tr>
-						<th onClick={() => handleSort('team')}>Team {getSortIcon('team')}</th>
-						<th onClick={() => handleSort('player')}>Player {getSortIcon('player')}</th>
-						<th onClick={() => handleSort('role')}>Role {getSortIcon('role')}</th>
-						<th onClick={() => handleSort('mouse')}>Mouse {getSortIcon('mouse')}</th>
+						<th onClick={() => handleSort('team')}>
+							Team {getSortIcon('team')}
+						</th>
+						<th onClick={() => handleSort('player')}>
+							Player {getSortIcon('player')}
+						</th>
+						<th onClick={() => handleSort('role')}>
+							Role {getSortIcon('role')}
+						</th>
+						<th onClick={() => handleSort('mouse')}>
+							Mouse {getSortIcon('mouse')}
+						</th>
 						<th onClick={() => handleSort('hz')}>Hz {getSortIcon('hz')}</th>
 						<th onClick={() => handleSort('dpi')}>DPI {getSortIcon('dpi')}</th>
-						<th onClick={() => handleSort('sens')}>Sens {getSortIcon('sens')}</th>
-						<th onClick={() => handleSort('edpi')}>eDPI {getSortIcon('edpi')}</th>
-						<th onClick={() => handleSort('zoomSens')}>Zoom Sens {getSortIcon('zoomSens')}</th>
-						<th onClick={() => handleSort('monitor')}>Monitor {getSortIcon('monitor')}</th>
-						<th onClick={() => handleSort('resolution')}>Resolution {getSortIcon('resolution')}</th>
-						<th onClick={() => handleSort('aspectRatio')}>Aspect Ratio {getSortIcon('aspectRatio')}</th>
-						<th onClick={() => handleSort('scalingMode')}>Scaling Mode {getSortIcon('scalingMode')}</th>
-						<th onClick={() => handleSort('mousepad')}>Mousepad {getSortIcon('mousepad')}</th>
-						<th onClick={() => handleSort('keyboard')}>Keyboard {getSortIcon('keyboard')}</th>
-						<th onClick={() => handleSort('headset')}>Headset {getSortIcon('headset')}</th>
-						<th onClick={() => handleSort('chair')}>Chair {getSortIcon('chair')}</th>
+						<th onClick={() => handleSort('sens')}>
+							Sens {getSortIcon('sens')}
+						</th>
+						<th onClick={() => handleSort('edpi')}>
+							eDPI {getSortIcon('edpi')}
+						</th>
+						<th onClick={() => handleSort('zoomSens')}>
+							Zoom Sens {getSortIcon('zoomSens')}
+						</th>
+						<th onClick={() => handleSort('monitor')}>
+							Monitor {getSortIcon('monitor')}
+						</th>
+						<th onClick={() => handleSort('resolution')}>
+							Resolution {getSortIcon('resolution')}
+						</th>
+						<th onClick={() => handleSort('aspectRatio')}>
+							Aspect Ratio {getSortIcon('aspectRatio')}
+						</th>
+						<th onClick={() => handleSort('scalingMode')}>
+							Scaling Mode {getSortIcon('scalingMode')}
+						</th>
+						<th onClick={() => handleSort('mousepad')}>
+							Mousepad {getSortIcon('mousepad')}
+						</th>
+						<th onClick={() => handleSort('keyboard')}>
+							Keyboard {getSortIcon('keyboard')}
+						</th>
+						<th onClick={() => handleSort('headset')}>
+							Headset {getSortIcon('headset')}
+						</th>
+						<th onClick={() => handleSort('chair')}>
+							Chair {getSortIcon('chair')}
+						</th>
 					</tr>
 				</thead>
 				<tbody>
