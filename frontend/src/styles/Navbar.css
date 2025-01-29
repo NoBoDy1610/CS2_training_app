@@ -1,7 +1,7 @@
 .navbar {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
+	justify-content: space-between;
 	background-color: #333;
 	color: white;
 	padding: 10px 20px;
@@ -11,37 +11,28 @@
 	z-index: 1000;
 }
 
+/* ✅ Lewa strona – Przycisk "Wróć" */
 .nav-left {
 	display: flex;
 	align-items: center;
 }
 
-.back-btn {
-	background-color: #555;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	padding: 8px 12px;
-	cursor: pointer;
-	font-size: 14px;
-	transition: background 0.3s ease;
-}
-
-.back-btn:hover {
-	background-color: #777;
-}
-
+/* ✅ Środkowa sekcja – WYŚRODKOWANA + stałe odstępy */
 .nav-list {
 	display: flex;
-	flex-grow: 1;
 	justify-content: center;
+	gap: 25px; /* 🔥 Zwiększony odstęp między przyciskami */
 	list-style: none;
-	margin: 0;
+	margin: 0 auto; /* Wyśrodkowanie */
 	padding: 0;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
+/* ✅ Nawigacja – Środkowe przyciski */
 .nav-item {
-	margin: 0 15px;
+	margin: 0;
 }
 
 .nav-item a {
@@ -56,13 +47,15 @@
 	color: #ffcc00;
 }
 
+/* ✅ Prawa strona – Profil i wyloguj */
 .nav-right {
 	display: flex;
-	justify-content: flex-end;
 	align-items: center;
-	gap: 10px;
+	gap: 12px; /* 🔥 Dodałem większy odstęp */
+	margin-left: auto; /* Ustawienie na prawo */
 }
 
+/* ✅ Przycisk Profil */
 .profile-link {
 	text-decoration: none;
 	color: white;
@@ -70,14 +63,18 @@
 	display: flex;
 	align-items: center;
 	gap: 5px;
+	transition: color 0.3s ease;
 }
 
 .profile-link:hover {
 	color: #ffcc00;
 }
 
+/* ✅ Styl przycisków */
+.back-btn,
+.login-btn,
 .logout-btn {
-	background-color: #e74c3c;
+	background-color: #555;
 	color: white;
 	border: none;
 	border-radius: 5px;
@@ -85,35 +82,45 @@
 	cursor: pointer;
 	font-size: 14px;
 	transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+	background-color: #777;
+}
+
+.login-btn {
+	background-color: #007bff;
+}
+
+.login-btn:hover {
+	background-color: #0056b3;
+}
+
+.logout-btn {
+	background-color: #e74c3c;
 }
 
 .logout-btn:hover {
 	background-color: #c0392b;
 }
 
-.login-btn {
-	background-color: #007bff; /* Niebieskie tło dla przycisku */
-	color: white;
-	border: none;
-	border-radius: 5px;
-	padding: 8px 12px;
-	cursor: pointer;
-	font-size: 14px;
-	transition: background 0.3s ease;
-}
-
-.login-btn:hover {
-	background-color: #0056b3; /* Ciemniejszy niebieski po najechaniu */
-}
-
+/* ✅ RESPONSYWNOŚĆ */
 @media (max-width: 768px) {
 	.nav-list {
-		flex-direction: column;
-		align-items: center;
+		position: static; /* Usuwa absolute na małych ekranach */
+		transform: none;
+		margin: 0 auto;
+		gap: 15px; /* 🔥 Zmniejszony odstęp dla telefonów */
 	}
 
 	.nav-item {
 		margin: 10px 0;
+	}
+
+	.nav-right {
+		margin-left: 0;
+		justify-content: center;
+		gap: 8px; /* 🔥 Mniejszy odstęp na telefonach */
 	}
 
 	.back-btn,
@@ -121,9 +128,5 @@
 	.logout-btn {
 		font-size: 12px;
 		padding: 6px 10px;
-	}
-
-	.profile-link {
-		font-size: 14px;
 	}
 }

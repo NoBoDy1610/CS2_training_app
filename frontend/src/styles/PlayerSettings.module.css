@@ -1,147 +1,147 @@
 /* ✅ Wrapper na całą stronę */
 .container {
-    width: 90vw;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 10px;
-    overflow: hidden;
+	width: 90vw;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px;
+	overflow: hidden;
 }
 
 /* ✅ Wrapper na tabelę (główne przewijanie) */
 .tableWrapper {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    border: 1px solid #ddd;
-    background: white;
-    position: relative;
-    margin: 0 auto;
-    padding-bottom: 15px;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	border: 1px solid #ddd;
+	background: white;
+	position: relative;
+	margin: 0 auto;
+	padding-bottom: 15px;
 }
 
 /* ✅ Pasek przewijania górny i dolny */
 .scrollWrapper {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: 12px;
-    background: #ddd;
-    margin-bottom: 5px;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	height: 12px;
+	background: #ddd;
+	margin-bottom: 5px;
 }
 
 .scrollWrapper::-webkit-scrollbar {
-    height: 12px;
+	height: 12px;
 }
 
 .scrollWrapper::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 6px;
+	background: #888;
+	border-radius: 6px;
 }
 
 .scrollWrapper::-webkit-scrollbar-thumb:hover {
-    background: #555;
+	background: #555;
 }
 
 /* ✅ Nagłówki tabeli STICKY na górze */
 thead {
-    position: sticky;
-    top: 0;
-    background: #222;
-    color: white;
-    z-index: 103;
+	position: sticky;
+	top: 0;
+	background: #222;
+	color: white;
+	z-index: 103;
 }
 
 /* ✅ Styl nagłówków */
 th {
-    padding: 10px;
-    text-align: left;
-    cursor: pointer;
-    border-bottom: 2px solid #444;
-    white-space: nowrap;
-    font-size: 13px;
-    background: #222;
-    position: sticky;
-    top: 0;
-    z-index: 104;
+	padding: 10px;
+	text-align: left;
+	cursor: pointer;
+	border-bottom: 2px solid #444;
+	white-space: nowrap;
+	font-size: 13px;
+	background: #222;
+	position: sticky;
+	top: 0;
+	z-index: 104;
 }
 
 /* ✅ Styl dla strzałek sortowania */
 th::after {
-    content: " ⬍";
-    font-size: 10px;
+	font-size: 10px;
 }
 
 /* ✅ Styl komórek tabeli */
 td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    white-space: nowrap;
-    font-size: 12px;
+	padding: 8px;
+	border-bottom: 1px solid #ddd;
+	white-space: nowrap;
+	font-size: 12px;
 }
 
 /* ✅ Naprzemienne kolory wierszy */
 tr:nth-child(even) {
-    background: #f5f5f5;
+	background: #f5f5f5;
 }
 
 /* ✅ Hover efekt */
 tr:hover {
-    background: #ddd;
+	background: #ddd;
 }
 
 /* ✅ FULL RESPONSYWNOŚĆ */
 @media (max-width: 1024px) {
-    .table {
-        font-size: 12px;
-    }
-    th, td {
-        padding: 7px;
-        font-size: 12px;
-    }
+	.table {
+		font-size: 12px;
+	}
+	th,
+	td {
+		padding: 7px;
+		font-size: 12px;
+	}
 }
 /* ✅ Strzałki do przewijania */
 .controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin-bottom: 10px;
 }
 
 .scrollBtn {
-  background: #222;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background 0.3s;
+	background: #222;
+	color: white;
+	border: none;
+	padding: 8px 12px;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: background 0.3s;
 }
 
 .scrollBtn:hover {
-  background: #444;
+	background: #444;
 }
 
 /* ✅ Pasek przewijania górny i dolny */
 .scrollWrapper {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  height: 12px;
-  background: #ddd;
-  margin-bottom: 5px;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	height: 12px;
+	background: #ddd;
+	margin-bottom: 5px;
 }
 
 .scrollWrapper::-webkit-scrollbar {
-  height: 12px;
+	height: 12px;
 }
 
 .scrollWrapper::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 6px;
+	background: #888;
+	border-radius: 6px;
 }
 
 .scrollWrapper::-webkit-scrollbar-thumb:hover {
-  background: #555;
+	background: #555;
 }

@@ -1,18 +1,42 @@
 .training-plans {
-	margin-top: 20px;
-	padding: 15px;
-	background: #e9f5ff;
+	background: #222;
+	color: white;
+	padding: 20px;
 	border-radius: 8px;
-	text-align: center;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	max-width: 600px;
+	margin: 20px auto;
 }
 
 .training-plans h2 {
-	font-size: 20px;
-	color: #007bff;
+	text-align: center;
+	font-size: 22px;
 }
 
 .training-plans p {
 	font-size: 14px;
-	color: #555;
+	margin-bottom: 10px;
+}
+
+.training-plans ul {
+	padding: 0;
+	list-style: none;
+}
+
+.training-plans li {
+	background: #444;
+	padding: 8px;
+	margin: 5px 0;
+	border-radius: 5px;
+	font-size: 13px;
+}
+
+.select-training {
+	width: 100%;
+	padding: 8px;
+	border: none;
+	border-radius: 5px;
+	background: #333;
+	color: white;
+	font-size: 14px;
 }

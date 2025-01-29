@@ -8,7 +8,7 @@ const Profile = () => {
 	const [currentPassword, setCurrentPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
-	const [priority, setPriority] = useState('reaction');
+	const [priority, setPriority] = useState('reactionTime');
 	const [results, setResults] = useState([]); // Lista wyników
 
 	useEffect(() => {
@@ -110,91 +110,95 @@ const Profile = () => {
 				<strong>Email:</strong> {user.email}
 			</p>
 			<p className='profile-info'>
-				<strong>Username:</strong> {user.username}
+				<strong>Nazwa użytkownika:</strong> {user.username}
 			</p>
 
 			{/* Sekcja zmiany hasła */}
-			<div className='password-change'>
-				<h3>Zmiana hasła</h3>
-				<input
-					type='password'
-					placeholder='Aktualne hasło'
-					value={currentPassword}
-					onChange={(e) => setCurrentPassword(e.target.value)}
-				/>
-				<input
-					type='password'
-					placeholder='Nowe hasło'
-					value={newPassword}
-					onChange={(e) => setNewPassword(e.target.value)}
-				/>
-				<input
-					type='password'
-					placeholder='Potwierdź nowe hasło'
-					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
-				/>
-				<button className='btn' onClick={handleChangePassword}>
-					Zmień hasło
-				</button>
+			<div className='change-password-container'>
+				<h3>🔑 Zmiana hasła</h3>
+				<form className='change-password-form'>
+					<label>Aktualne hasło</label>
+					<input
+						type='password'
+						value={currentPassword}
+						onChange={(e) => setCurrentPassword(e.target.value)}
+						placeholder='Wpisz aktualne hasło'
+					/>
+
+					<label>Nowe hasło</label>
+					<input
+						type='password'
+						value={newPassword}
+						onChange={(e) => setNewPassword(e.target.value)}
+						placeholder='Wpisz nowe hasło'
+					/>
+
+					<label>Potwierdź nowe hasło</label>
+					<input
+						type='password'
+						value={confirmPassword}
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						placeholder='Potwierdź nowe hasło'
+					/>
+
+					<button type='button' onClick={handleChangePassword}>
+						🔄 Zmień hasło
+					</button>
+				</form>
 			</div>
-			
+
 			{/* Sekcja wyników */}
 			<div className='results-section'>
 				<h3>Twoje wyniki</h3>
 				{results.length > 0 ? (
 					<>
-						{/* Tabela czasu reakcji */}
 						<h4>Czas reakcji</h4>
-						<table className='results-table'>
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Wynik (ms)</th>
-									<th>Data</th>
-								</tr>
-							</thead>
-							<tbody>
-								{results
-									.filter((result) => result.type === 'reactionTime')
-									.map(
-										(result, index) =>
-											result.time !== undefined && (
-												<tr key={index}>
-													<td>{index + 1}</td>
-													<td>{result.time}</td>
-													<td>{new Date(result.date).toLocaleString()}</td>
-												</tr>
-											)
-									)}
-							</tbody>
-						</table>
+						<div className='table-container'>
+							<table className='results-table'>
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Wynik (ms)</th>
+										<th>Data</th>
+									</tr>
+								</thead>
+								<tbody>
+									{results
+										.filter((result) => result.type === 'reactionTime')
+										.map((result, index) => (
+											<tr key={index}>
+												<td>{index + 1}</td>
+												<td>{result.time ?? '-'}</td>
+												<td>{new Date(result.date).toLocaleString() ?? '-'}</td>
+											</tr>
+										))}
+								</tbody>
+							</table>
+						</div>
 
-						{/* Tabela celności */}
 						<h4>Celność</h4>
-						<table className='results-table'>
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Wynik</th>
-									<th>Data</th>
-								</tr>
-							</thead>
-							<tbody>
-								{results
-									.filter((result) => result.type === 'aimTraining')
-									.map(
-										(result, index) =>
-											result.points !== undefined && (
-												<tr key={index}>
-													<td>{index + 1}</td>
-													<td>{result.points}</td>
-													<td>{new Date(result.date).toLocaleString()}</td>
-												</tr>
-											)
-									)}
-							</tbody>
-						</table>
+						<div className='table-container'>
+							<table className='results-table'>
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Wynik</th>
+										<th>Data</th>
+									</tr>
+								</thead>
+								<tbody>
+									{results
+										.filter((result) => result.type === 'aimTraining')
+										.map((result, index) => (
+											<tr key={index}>
+												<td>{index + 1}</td>
+												<td>{result.points ?? '-'}</td>
+												<td>{new Date(result.date).toLocaleString() ?? '-'}</td>
+											</tr>
+										))}
+								</tbody>
+							</table>
+						</div>
 					</>
 				) : (
 					<p className='no-results'>Brak dostępnych wyników.</p>
@@ -209,12 +213,14 @@ const Profile = () => {
 					value={priority}
 					onChange={(e) => setPriority(e.target.value)}
 				>
-					<option value='reaction'>Czas reakcji</option>
+					<option value='reactionTime'>Czas reakcji</option>
 					<option value='aimTraining'>Celność</option>
 					<option value='tactics'>Taktyka</option>
+					<option value='mapKnowledge'>Znajomość map</option>
 				</select>
 				<p className='training-description'>
-					Twój plan będzie dostosowany do priorytetu: {priority}
+					Twój plan będzie dostosowany do priorytetu:{' '}
+					<strong>{priority}</strong>
 				</p>
 
 				<TrainingPlans priority={priority} />
