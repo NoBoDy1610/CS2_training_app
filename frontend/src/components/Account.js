@@ -113,6 +113,32 @@ const Profile = () => {
 				<strong>Username:</strong> {user.username}
 			</p>
 
+			{/* Sekcja zmiany hasła */}
+			<div className='password-change'>
+				<h3>Zmiana hasła</h3>
+				<input
+					type='password'
+					placeholder='Aktualne hasło'
+					value={currentPassword}
+					onChange={(e) => setCurrentPassword(e.target.value)}
+				/>
+				<input
+					type='password'
+					placeholder='Nowe hasło'
+					value={newPassword}
+					onChange={(e) => setNewPassword(e.target.value)}
+				/>
+				<input
+					type='password'
+					placeholder='Potwierdź nowe hasło'
+					value={confirmPassword}
+					onChange={(e) => setConfirmPassword(e.target.value)}
+				/>
+				<button className='btn' onClick={handleChangePassword}>
+					Zmień hasło
+				</button>
+			</div>
+			
 			{/* Sekcja wyników */}
 			<div className='results-section'>
 				<h3>Twoje wyniki</h3>
@@ -173,32 +199,6 @@ const Profile = () => {
 				) : (
 					<p className='no-results'>Brak dostępnych wyników.</p>
 				)}
-			</div>
-
-			{/* Sekcja zmiany hasła */}
-			<div className='password-change'>
-				<h3>Zmiana hasła</h3>
-				<input
-					type='password'
-					placeholder='Aktualne hasło'
-					value={currentPassword}
-					onChange={(e) => setCurrentPassword(e.target.value)}
-				/>
-				<input
-					type='password'
-					placeholder='Nowe hasło'
-					value={newPassword}
-					onChange={(e) => setNewPassword(e.target.value)}
-				/>
-				<input
-					type='password'
-					placeholder='Potwierdź nowe hasło'
-					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
-				/>
-				<button className='btn' onClick={handleChangePassword}>
-					Zmień hasło
-				</button>
 			</div>
 
 			{/* Sekcja planu treningowego */}
