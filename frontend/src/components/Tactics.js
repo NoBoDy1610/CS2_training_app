@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import tacticsData from '../data/tacticsData';
-import styles from '../styles/Tactics.module.css'; // ✅ Correct import
+import styles from '../styles/Tactics.module.css';
 
 const Tactics = () => {
 	const [selectedMap, setSelectedMap] = useState('mirage');
@@ -9,15 +9,11 @@ const Tactics = () => {
 
 	return (
 		<div className={styles.tacticsContainer}>
-			{' '}
-			{/* ✅ Correct class name */}
 			<h2>🎯 Nauka Taktyk</h2>
 			<p>
 				Wybierz mapę i sytuację finansową, aby zobaczyć odpowiednie taktyki.
 			</p>
 			<div className={styles.tacticsSelect}>
-				{' '}
-				{/* ✅ Correct class name */}
 				<label>Mapa:</label>
 				<select
 					value={selectedMap}
@@ -49,8 +45,6 @@ const Tactics = () => {
 				</select>
 			</div>
 			<div className={styles.tacticsDisplay}>
-				{' '}
-				{/* ✅ Correct class name */}
 				<h3>Taktyka na {selectedMap.toUpperCase()}</h3>
 				<p>
 					{tacticsData[selectedMap]?.[selectedSituation]?.[side] ||

@@ -9,7 +9,7 @@ const Profile = () => {
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [priority, setPriority] = useState('reactionTime');
-	const [results, setResults] = useState([]); // Lista wyników
+	const [results, setResults] = useState([]);
 
 	useEffect(() => {
 		const fetchProfile = async () => {
