@@ -15,37 +15,35 @@ const ReactionTimeGame = () => {
 		const token = sessionStorage.getItem('token');
 		setIsLoggedIn(!!token);
 		if (token) fetchScores();
-	  }, []);
-	  
+	}, []);
 
-	  useEffect(() => {
+	useEffect(() => {
 		const token = sessionStorage.getItem('token');
 		setIsLoggedIn(!!token);
-	  
+
 		const handleLogin = () => {
-		  setIsLoggedIn(true);
-		  fetchScores();
+			setIsLoggedIn(true);
+			fetchScores();
 		};
-	  
+
 		const handleLogout = () => {
-		  setIsLoggedIn(false);
-		  setScores([]);
+			setIsLoggedIn(false);
+			setScores([]);
 		};
-	  
+
 		window.addEventListener('userLoggedIn', handleLogin);
 		window.addEventListener('userLoggedOut', handleLogout);
-	  
+
 		return () => {
-		  window.removeEventListener('userLoggedIn', handleLogin);
-		  window.removeEventListener('userLoggedOut', handleLogout);
+			window.removeEventListener('userLoggedIn', handleLogin);
+			window.removeEventListener('userLoggedOut', handleLogout);
 		};
-	  }, []);
-	  
+	}, []);
 
 	const startGame = () => {
 		setGameState('waiting');
 		setReactionTime(null);
-		setIsScoreSaved(false); // Reset możliwości zapisu wyniku
+		setIsScoreSaved(false); // Resetownie możliwości zapisu wyniku
 
 		const randomDelay = Math.floor(Math.random() * 2000) + 1000;
 		const timeout = setTimeout(() => {
@@ -73,7 +71,7 @@ const ReactionTimeGame = () => {
 			console.error('Brak tokena. Użytkownik musi się zalogować.');
 			return;
 		}
-	
+
 		try {
 			const response = await fetch('http://localhost:5000/scores', {
 				method: 'GET',
@@ -81,7 +79,7 @@ const ReactionTimeGame = () => {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-	
+
 			if (response.ok) {
 				const data = await response.json();
 				setScores(data); // Ustaw wyniki
@@ -92,25 +90,25 @@ const ReactionTimeGame = () => {
 			console.error('Błąd podczas komunikacji z serwerem:', error);
 		}
 	};
-	
+
 	const saveScore = async () => {
-		const token = sessionStorage.getItem('token'); 
-	
+		const token = sessionStorage.getItem('token');
+
 		if (!isLoggedIn) {
 			alert('Musisz się zalogować, aby zapisać wynik!');
 			return;
 		}
-	
+
 		if (isScoreSaved) {
 			alert('Ten wynik został już zapisany!');
 			return;
 		}
-	
+
 		if (!token) {
 			alert('Nie udało się zapisać wyniku. Zaloguj się ponownie.');
 			return;
 		}
-	
+
 		try {
 			const response = await fetch('http://localhost:5000/score', {
 				method: 'POST',
@@ -120,11 +118,11 @@ const ReactionTimeGame = () => {
 				},
 				body: JSON.stringify({ time: reactionTime }),
 			});
-	
+
 			if (response.ok) {
 				alert('Wynik zapisany pomyślnie!');
-				setIsScoreSaved(true); // Zablokuj ponowny zapis
-				fetchScores(); // Odśwież wyniki
+				setIsScoreSaved(true); // Zablokkowanie ponownego zapisu
+				fetchScores(); // Odświeżenie wyników
 			} else {
 				const data = await response.json();
 				alert(`Nie udało się zapisać wyniku: ${data.error}`);
@@ -136,7 +134,7 @@ const ReactionTimeGame = () => {
 			console.error('Błąd zapisu wyniku:', error);
 		}
 	};
-	
+
 	const sortScores = (key) => {
 		let direction = 'asc';
 		if (sortConfig.key === key && sortConfig.direction === 'asc') {

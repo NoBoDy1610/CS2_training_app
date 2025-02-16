@@ -11,26 +11,25 @@
 	z-index: 1000;
 }
 
-/* ✅ Lewa strona – Przycisk "Wróć" */
+/* Przycisk "Wróć" */
 .nav-left {
 	display: flex;
 	align-items: center;
 }
 
-/* ✅ Środkowa sekcja – WYŚRODKOWANA + stałe odstępy */
+/* Środkowe przyciski */
 .nav-list {
 	display: flex;
 	justify-content: center;
-	gap: 25px; /* 🔥 Zwiększony odstęp między przyciskami */
+	gap: 25px;
 	list-style: none;
-	margin: 0 auto; /* Wyśrodkowanie */
+	margin: 0 auto;
 	padding: 0;
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
 }
 
-/* ✅ Nawigacja – Środkowe przyciski */
 .nav-item {
 	margin: 0;
 }
@@ -47,15 +46,15 @@
 	color: #ffcc00;
 }
 
-/* ✅ Prawa strona – Profil i wyloguj */
+/* Profil i wyloguj */
 .nav-right {
 	display: flex;
 	align-items: center;
-	gap: 12px; /* 🔥 Dodałem większy odstęp */
-	margin-left: auto; /* Ustawienie na prawo */
+	gap: 12px;
+	margin-left: auto;
 }
 
-/* ✅ Przycisk Profil */
+/* Przycisk Profil */
 .profile-link {
 	text-decoration: none;
 	color: white;
@@ -70,7 +69,7 @@
 	color: #ffcc00;
 }
 
-/* ✅ Styl przycisków */
+/* Styl przycisków */
 .back-btn,
 .login-btn,
 .logout-btn {
@@ -104,13 +103,13 @@
 	background-color: #c0392b;
 }
 
-/* ✅ RESPONSYWNOŚĆ */
+/* Responsywność */
 @media (max-width: 768px) {
 	.nav-list {
-		position: static; /* Usuwa absolute na małych ekranach */
+		position: static;
 		transform: none;
 		margin: 0 auto;
-		gap: 15px; /* 🔥 Zmniejszony odstęp dla telefonów */
+		gap: 15px;
 	}
 
 	.nav-item {
@@ -120,7 +119,7 @@
 	.nav-right {
 		margin-left: 0;
 		justify-content: center;
-		gap: 8px; /* 🔥 Mniejszy odstęp na telefonach */
+		gap: 8px;
 	}
 
 	.back-btn,

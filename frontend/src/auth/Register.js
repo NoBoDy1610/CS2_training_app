@@ -39,7 +39,7 @@ const Register = ({ switchToLogin }) => {
 
 			// Automatyczna zmiana widoku modala na logowanie
 			setTimeout(() => {
-				switchToLogin(); // Przełącz na widok logowania
+				switchToLogin(); // Przełącenie na widok logowania
 			}, 2000);
 		} catch (error) {
 			// Obsługa szczegółowych błędów

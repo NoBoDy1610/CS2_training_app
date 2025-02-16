@@ -1,4 +1,4 @@
-/* ✅ Wrapper na całą stronę */
+/* Wrapper na całą stronę */
 .container {
 	width: 90vw;
 	max-width: 1200px;
@@ -7,7 +7,7 @@
 	overflow: hidden;
 }
 
-/* ✅ Wrapper na tabelę (główne przewijanie) */
+/* Wrapper na tabelę (główne przewijanie) */
 .tableWrapper {
 	width: 100%;
 	overflow-x: auto;
@@ -19,7 +19,7 @@
 	padding-bottom: 15px;
 }
 
-/* ✅ Pasek przewijania górny i dolny */
+/* Pasek przewijania górny i dolny */
 .scrollWrapper {
 	width: 100%;
 	overflow-x: auto;
@@ -42,7 +42,7 @@
 	background: #555;
 }
 
-/* ✅ Nagłówki tabeli STICKY na górze */
+/* Nagłówki tabeli */
 thead {
 	position: sticky;
 	top: 0;
@@ -51,7 +51,7 @@ thead {
 	z-index: 103;
 }
 
-/* ✅ Styl nagłówków */
+/* Styl nagłówków */
 th {
 	padding: 10px;
 	text-align: left;
@@ -65,12 +65,12 @@ th {
 	z-index: 104;
 }
 
-/* ✅ Styl dla strzałek sortowania */
+/* Styl dla strzałek sortowania */
 th::after {
 	font-size: 10px;
 }
 
-/* ✅ Styl komórek tabeli */
+/* Styl komórek tabeli */
 td {
 	padding: 8px;
 	border-bottom: 1px solid #ddd;
@@ -78,28 +78,17 @@ td {
 	font-size: 12px;
 }
 
-/* ✅ Naprzemienne kolory wierszy */
+/* Naprzemienne kolory wierszy */
 tr:nth-child(even) {
 	background: #f5f5f5;
 }
 
-/* ✅ Hover efekt */
+/* Hover efekt */
 tr:hover {
 	background: #ddd;
 }
 
-/* ✅ FULL RESPONSYWNOŚĆ */
-@media (max-width: 1024px) {
-	.table {
-		font-size: 12px;
-	}
-	th,
-	td {
-		padding: 7px;
-		font-size: 12px;
-	}
-}
-/* ✅ Strzałki do przewijania */
+/* Strzałki do przewijania */
 .controls {
 	display: flex;
 	align-items: center;
@@ -123,7 +112,7 @@ tr:hover {
 	background: #444;
 }
 
-/* ✅ Pasek przewijania górny i dolny */
+/* Pasek przewijania górny i dolny */
 .scrollWrapper {
 	width: 100%;
 	overflow-x: auto;
@@ -144,4 +133,16 @@ tr:hover {
 
 .scrollWrapper::-webkit-scrollbar-thumb:hover {
 	background: #555;
+}
+
+/* Responsywność */
+@media (max-width: 1024px) {
+	.table {
+		font-size: 12px;
+	}
+	th,
+	td {
+		padding: 7px;
+		font-size: 12px;
+	}
 }

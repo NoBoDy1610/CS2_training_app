@@ -6,8 +6,9 @@ const scoreSchema = new mongoose.Schema({
 	date: { type: Date, default: Date.now },
 });
 
+// Schemat dla wyników drugiej gry
 const aimTrainingScoreSchema = new mongoose.Schema({
-	points: { type: Number, required: true },
+	points: { type: Number, required: true }, // Ilość punktów w grze na celność
 	date: { type: Date, default: Date.now },
 });
 

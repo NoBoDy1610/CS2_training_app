@@ -14,7 +14,7 @@ const Navbar = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const token = sessionStorage.getItem('token'); // Zmiana na sessionStorage
+		const token = sessionStorage.getItem('token');
 		setIsLoggedIn(!!token);
 
 		const handleLogin = () => setIsLoggedIn(true);
@@ -40,8 +40,8 @@ const Navbar = () => {
 
 	const handleLogout = () => {
 		sessionStorage.removeItem('token');
-		window.dispatchEvent(new Event('userLoggedOut')); // Powiadom inne komponenty
-		setIsLoggedIn(false); // Zaktualizuj stan
+		window.dispatchEvent(new Event('userLoggedOut')); // Powiadomienie innych komponentów
+		setIsLoggedIn(false); // Zaktualizowanie stanu
 		navigate('/');
 	};
 

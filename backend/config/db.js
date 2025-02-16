@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Wczytaj zmienne środowiskowe z pliku .env
+dotenv.config(); // Wczytanie zmiennych środowiskowe z pliku .env
 
 const connectDB = async () => {
   try {

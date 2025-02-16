@@ -10,14 +10,14 @@ dotenv.config();
 
 const app = express();
 
-// Connection with MongoDB
+// Połącznie z MongoDB
 connectDB();
 
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 
-// Secret for JWT
+// Sekretny klucz do JWT
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 // Middleware do uwierzytelniania
@@ -37,7 +37,7 @@ const authenticateToken = (req, res, next) => {
 	}
 };
 
-// Routes
+// Ścieżki
 app.get('/', (req, res) => {
 	res.send('API is running...');
 });
@@ -97,7 +97,7 @@ app.post('/login', async (req, res) => {
 	}
 
 	try {
-		// Znajdź użytkownika po emailu
+		// Wyszukanie użytkownika po emailu
 		const user = await User.findOne({ email });
 		if (!user) {
 			return res
@@ -105,7 +105,7 @@ app.post('/login', async (req, res) => {
 				.json({ message: 'Nieprawidłowy email lub hasło.' });
 		}
 
-		// Sprawdź poprawność hasła
+		// Sprawdzenie poprawność hasła
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
 			return res
@@ -126,14 +126,14 @@ app.post('/login', async (req, res) => {
 // Profil użytkownika
 app.get('/profile', authenticateToken, async (req, res) => {
 	try {
-		const user = await User.findById(req.user.id).select('-password'); // Wyklucz hasło
+		const user = await User.findById(req.user.id).select('-password');
 		res.status(200).json(user);
 	} catch (error) {
 		res.status(500).json({ message: 'Błąd serwera.' });
 	}
 });
 
-// Resetowanie hasła (przykład)
+// Resetowanie hasła
 app.post('/forgot-password', async (req, res) => {
 	const { email } = req.body;
 
@@ -141,7 +141,7 @@ app.post('/forgot-password', async (req, res) => {
 	res.json({ message: 'Link do resetu hasła został wysłany.' });
 });
 
-// Zapis wyniku
+// Zapis wyniku Reaction Time
 app.post('/score', authenticateToken, async (req, res) => {
 	const { time } = req.body;
 
@@ -151,13 +151,13 @@ app.post('/score', authenticateToken, async (req, res) => {
 	}
 
 	try {
-		// Znajdź użytkownika na podstawie ID z tokena
+		// Wyszukanie użytkownika na podstawie ID z tokena
 		const user = await User.findById(req.user.id);
 		if (!user) {
 			return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
 		}
 
-		// Dodaj wynik do użytkownika
+		// Dodawanie wynik do użytkownika
 		user.scores.push({ time });
 		await user.save();
 
@@ -170,7 +170,7 @@ app.post('/score', authenticateToken, async (req, res) => {
 	}
 });
 
-// Pobranie wyników użytkownika
+// Pobranie wyników Reaction Time
 app.get('/scores', authenticateToken, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id);
@@ -181,20 +181,6 @@ app.get('/scores', authenticateToken, async (req, res) => {
 		res.status(200).json(user.scores);
 	} catch (error) {
 		console.error(error);
-		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
-	}
-});
-
-// Pobranie wyników Aim Training
-app.get('/aim-training-scores', authenticateToken, async (req, res) => {
-	try {
-		const user = await User.findById(req.user.id);
-		if (!user) {
-			return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
-		}
-		res.status(200).json(user.aimTrainingScores || []); // Zwróć wyniki gry Aim Training
-	} catch (error) {
-		console.error('Błąd podczas pobierania wyników Aim Training:', error);
 		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
 	}
 });
@@ -221,6 +207,20 @@ app.post('/aim-training-scores', authenticateToken, async (req, res) => {
 			.json({ message: 'Wynik zapisany pomyślnie!', savedPoints: points });
 	} catch (error) {
 		console.error('Błąd podczas zapisywania wyniku Aim Training:', error);
+		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
+	}
+});
+
+// Pobranie wyników Aim Training
+app.get('/aim-training-scores', authenticateToken, async (req, res) => {
+	try {
+		const user = await User.findById(req.user.id);
+		if (!user) {
+			return res.status(404).json({ error: 'Nie znaleziono użytkownika.' });
+		}
+		res.status(200).json(user.aimTrainingScores || []);
+	} catch (error) {
+		console.error('Błąd podczas pobierania wyników Aim Training:', error);
 		res.status(500).json({ error: 'Błąd serwera. Spróbuj ponownie później.' });
 	}
 });
@@ -283,6 +283,6 @@ app.get('/results', authenticateToken, async (req, res) => {
 	}
 });
 
-// Start server
+// Start serwera
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Serwer działa na porcie ${PORT}`));

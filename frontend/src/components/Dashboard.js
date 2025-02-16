@@ -5,13 +5,13 @@ import Footer from './Footer';
 import MainSection from './MainSection';
 
 const Dashboard = () => {
-  return (
-    <div>
-      <Header />
-      <MainSection />
-      <Footer />
-    </div>
-  );
+	return (
+		<div>
+			<Header />
+			<MainSection />
+			<Footer />
+		</div>
+	);
 };
 
 export default Dashboard;
