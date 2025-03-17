@@ -1,37 +1,75 @@
-.tiles-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: 20px;
-	padding: 20px;
+.main-section {
+    text-align: center;
+    padding: 40px 20px; /* Większy padding dla lepszego rozmieszczenia */
 }
 
+/* Siatka kafelków */
+.tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Większe kafelki */
+    gap: 30px; /* Większa przerwa między kafelkami */
+    max-width: 1200px; /* Większa szerokość maksymalna */
+    margin: 0 auto;
+}
+
+/* Styl kafelków */
 .tile {
-	background-color: #4a90e2;
-	color: white;
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
-	transition: transform 0.2s, box-shadow 0.2s;
-	text-align: center;
-	font-size: 18px;
+    background-color: #4a90e2;
+    color: white;
+    padding: 40px; /* Większy padding wewnątrz kafelków */
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 180px; /* Większa wysokość kafelków */
 }
 
-.tile p {
-	margin: 10px 0 0 0;
-	font-size: 16px;
-}
-
+/* Ikony w kafelkach */
 .tile svg {
-	margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 60px; /* Powiększone ikony */
 }
 
+/* Tekst w kafelkach */
+.tile p {
+    margin: 12px 0 0 0;
+    font-size: 22px; /* Większa czcionka */
+    font-weight: bold;
+}
+
+/* Efekt hover */
 .tile:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Kliknięcie */
 .tile:active {
-	transform: translateY(0);
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* RESPONSYWNOŚĆ */
+/* Na telefonach kafelki będą pełnej szerokości */
+@media (max-width: 768px) {
+    .tiles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tile {
+        height: 160px; /* Trochę mniejsza wysokość na mobilnych */
+    }
+
+    .tile svg {
+        font-size: 50px; /* Mniejsze ikony na mobilnych */
+    }
+
+    .tile p {
+        font-size: 20px; /* Lekko zmniejszony tekst */
+    }
 }
