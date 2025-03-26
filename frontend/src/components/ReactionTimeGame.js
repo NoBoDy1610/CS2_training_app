@@ -110,7 +110,7 @@ const ReactionTimeGame = () => {
 		}
 
 		try {
-			const response = await fetch('http://localhost:5000/score', {
+			const response = await fetch('http://localhost:5000/scores', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

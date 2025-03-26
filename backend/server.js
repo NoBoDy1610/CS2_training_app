@@ -142,7 +142,7 @@ app.post('/forgot-password', async (req, res) => {
 });
 
 // Zapis wyniku Reaction Time
-app.post('/score', authenticateToken, async (req, res) => {
+app.post('/scores', authenticateToken, async (req, res) => {
 	const { time } = req.body;
 
 	// Walidacja danych
