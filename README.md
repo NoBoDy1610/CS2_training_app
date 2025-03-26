@@ -1,4 +1,4 @@
-````markdown
+
 # CS2 Training App
 
 Witaj w **CS2 Training App** – aplikacji stworzonej z myślą o graczach Counter-Strike 2, którzy chcą poprawić swoje umiejętności i trenować jak profesjonaliści. Ten projekt ma na celu dostarczenie prostych, ale skutecznych narzędzi do treningu w CS2.
@@ -22,8 +22,6 @@ Aby rozpocząć korzystanie z aplikacji, wykonaj poniższe kroki:
    ```bash
    git clone https://github.com/NoBoDy1610/CS2_training_app.git
    ```
-````
-
 2. **Przejdź do katalogu projektu**:
    ```bash
    cd CS2_training_app
