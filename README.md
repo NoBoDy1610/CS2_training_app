@@ -1,95 +1,123 @@
 # CS2 Training App
 
-Witaj w **CS2 Training App** – aplikacji stworzonej z myślą o graczach Counter-Strike 2, którzy chcą poprawić swoje umiejętności i trenować jak profesjonaliści. Ten projekt ma na celu dostarczenie prostych, ale skutecznych narzędzi do treningu w CS2.
+Welcome to **CS2 Training App** – an application designed for Counter-Strike 2 players who want to sharpen their skills and train like professionals. Whether you’re a beginner or a seasoned CS2 player, this platform provides straightforward and effective training tools to help you elevate your game.
 
-## O projekcie
+## About the Project
 
-**CS2 Training App** to aplikacja zaprojektowana, aby pomóc graczom w doskonaleniu ich umiejętności w grze Counter-Strike 2. Niezależnie od tego, czy jesteś początkującym, czy doświadczonym graczem, ta aplikacja oferuje funkcje wspierające Twój rozwój w grze.
+**CS2 Training App** is a training tool built to assist Counter-Strike 2 players in mastering their gameplay skills. Powered by a robust back-end and an intuitive front-end, this app offers a variety of training modes to improve aim, reaction time, map knowledge, and tactical awareness. Created out of a passion for CS2, the goal is to provide players with a focused environment to practice and grow, bridging the gap between casual play and competitive excellence.
 
-### Główne funkcje
-- **Tryb treningowy**: Ćwicz celność, refleks i strategie w kontrolowanym środowisku.
-- **Personalizacja**: Dostosuj ustawienia do swojego stylu gry.
-- **Statystyki**: Śledź swoje postępy i analizuj wyniki.
-- **Wsparcie dla CS2**: Zoptymalizowane pod kątem najnowszej wersji gry.
+## Features
 
-## Instalacja
+### Training
+- **Aim Training**: Practice your accuracy with exercises designed to improve headshot precision and weapon control.
+- **Reaction Time Training**: Boost your reflexes with drills that test and enhance your response speed.
+- **Map Knowledge**: Learn key positions, callouts, and layouts of popular CS2 maps to gain a strategic edge.
+- **Tactics Training**: Study and practice team strategies, grenade lineups, and situational decision-making.
 
-Aby rozpocząć korzystanie z aplikacji, postępuj zgodnie z poniższymi krokami. Aplikacja składa się z dwóch części: back-endu (serwer) i front-endu (interfejs użytkownika).
+### Analysis
+- **Stats Tables**: Analyze your performance with detailed tables displaying statistics like accuracy percentage, reaction time averages, and training session results.
 
-### Wymagania systemowe
-1. **Back-end (część serwerowa)**:
-   - Visual Studio Code w wersji co najmniej 1.96
-   - Node.js w wersji co najmniej 22.11.0
-2. **Front-end (część użytkownika)**:
-   - Node.js w wersji co najmniej 20.11.0
-3. **Przeglądarka internetowa**:
-   - Dowolna nowoczesna przeglądarka obsługująca ECMAScript 6 i Fetch API, np. Chrome (80+), Edge (80+), Firefox (75+), Opera (67+), Safari (13+)
+### For Visitors (Not Logged In)
+- **Full App Access**: Use all training modes (aim, reaction time, map knowledge, tactics) without restrictions.
+- **No Progress Tracking**: Explore the app freely, but progress and stats cannot be saved or monitored.
 
-### Krok 1: Uruchomienie części back-endowej
-1. Otwórz Visual Studio Code i załaduj projekt back-endowy.
-2. Otwórz terminal w Visual Studio Code (Ctrl + ~ w Windows).
-3. Przejdź do folderu projektu back-endowego:
+### For Registered Users (Logged In)
+- **Progress Tracking**: Save and monitor your training stats over time using the stats tables.
+- **Training Plans**: Access personalized training plans tailored to your skill level and goals, helping you structure your practice effectively.
+- **Account Management**: View and update your account details or delete your account.
+- **Logout**: Securely log out to protect your account.
+
+## Installation
+
+To run this project locally, clone the repository:  
+`https://github.com/NoBoDy1610/CS2_training_app.git`
+
+### System Requirements
+1. **Back-end (Server Side)**:
+   - Visual Studio Code (version 1.96 or higher)
+   - Node.js (version 22.11.0 or higher)
+2. **Front-end (User Interface)**:
+   - Node.js (version 20.11.0 or higher)
+3. **Web Browser**:
+   - Any modern browser supporting ECMAScript 6 and Fetch API, e.g., Chrome (80+), Edge (80+), Firefox (75+), Opera (67+), Safari (13+)
+
+### Step 1: Setting Up the Back-end
+1. Open Visual Studio Code and load the back-end project.
+2. Open the terminal in Visual Studio Code (Ctrl + ~ on Windows).
+3. Navigate to the back-end project folder:
    ```bash
-   cd sciezka/do/folderu/backend
-
-4. Zainstaluj wszystkie wymagane zależności:
+   cd path/to/backend/folder
+ 
+4. Install all required dependencies:
    ```bash
    npm install
    ```
-5. Uruchom aplikację back-endową:
+5. Start the back-end application:
    ```bash
    nodemon server.js
    ```
-   Domyślnie back-end zacznie nasłuchiwać na porcie, np. `http://localhost:5000`. Informację o porcie znajdziesz w pliku konfiguracyjnym projektu (`.env` lub `server.js`).
+   By default, the back-end listens on a port like `http://localhost:5000`. Check the port details in the project’s configuration file (`.env` or `server.js`).
 
-### Krok 2: Uruchomienie części front-endowej
-1. Otwórz terminal systemowy (np. Terminal, PowerShell, cmd).
-2. Przejdź do folderu z kodem front-endowym:
+### Step 2: Setting Up the Front-end
+1. Open a system terminal (e.g., Terminal, PowerShell, cmd).
+2. Navigate to the front-end code folder:
    ```bash
-   cd sciezka/do/folderu/frontend
+   cd path/to/frontend/folder
    ```
-3. Zainstaluj wszystkie wymagane zależności:
+3. Install all required dependencies:
    ```bash
    npm install
    ```
-4. Uruchom aplikację front-endową:
+4. Start the front-end application:
    ```bash
    npm start
    ```
-   Domyślnie front-end zostanie uruchomiony na porcie `http://localhost:3000`.
+   By default, the front-end runs on `http://localhost:3000`.
 
-### Krok 3: Użycie aplikacji
-1. Otwórz przeglądarkę internetową.
-2. Wpisz w pasku adresu:
+### Step 3: Using the Application
+1. Open your web browser.
+2. Enter in the address bar:
    ```
    http://localhost:3000
    ```
-3. Aplikacja front-endowa powinna komunikować się z back-endem za pomocą API pod adresem `http://localhost:5000`.
+3. The front-end should connect to the back-end via the API at `http://localhost:5000`.
 
-### Dodatkowe uwagi
-- **Konfiguracja portów**: Jeśli back-end i front-end korzystają z różnych portów, upewnij się, że front-end wie, gdzie znajduje się back-end. W tym celu zaktualizuj adres URL back-endu w pliku `.env` lub w kodzie front-endu.
-- **Debugowanie**:
-  - Problemy z back-endem: Sprawdź logi wyświetlane w terminalu, w którym uruchamiasz serwer.
-  - Problemy z front-endem: Sprawdź konsolę przeglądarki (DevTools > Console).
-- **Współpraca back-endu i front-endu**: W przypadku problemów z komunikacją między back-endem a front-endem upewnij się, że:
-  - Serwer back-endu jest uruchomiony i dostępny.
-  - Adres API back-endu został poprawnie skonfigurowany w front-endzie.
+### Additional Notes
+- **Port Configuration**: Ensure the front-end knows the back-end’s address. Update the URL in the `.env` file or front-end code if needed.
+- **Debugging**:
+  - Back-end issues: Check logs in the server terminal.
+  - Front-end issues: Use the browser console (DevTools > Console).
+- **Back-end/Front-end Communication**: If there’s a connection issue, verify that:
+  - The back-end server is running and accessible.
+  - The API address is correctly configured in the front-end.
 
 ## Contributing
 
-Chcesz pomóc w rozwoju projektu? Wszystkie wkłady są mile widziane! Oto jak możesz się zaangażować:
+Want to contribute to the project? All help is welcome! Here’s how you can get involved:
+1. Clone the repository to your GitHub account (fork).
+2. Make changes and submit a Pull Request with your suggestions.
 
-1. **Sforkuj repozytorium**, wprowadź zmiany i wyślij Pull Request.
+Feel free to contact me with any questions about contributing.
 
-Prosimy o kontakt w razie pytań dotyczących współpracy.
+## Contact
 
-## Kontakt
-
-Masz pytania lub sugestie? Skontaktuj się ze mną:
+Have questions or suggestions? Reach out to me:
 - GitHub: [NoBoDy1610](https://github.com/NoBoDy1610)
-- E-mail: nikodem_czubak@wp.pl
+- Email: nikodem_czubak@wp.pl
+
+## License
+
+MIT License
+
+Copyright (c) 2025 NoBoDy1610
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ---
 
-Dziękuję za zainteresowanie **CS2 Training App**! Trenuj ciężko i baw się dobrze w Counter-Strike 2!
+Thank you for checking out **CS2 Training App**! Train smart and dominate the servers in Counter-Strike 2!
 ```
